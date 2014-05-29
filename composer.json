@@ -6,6 +6,13 @@
     "require": {
         "php": ">=5.3.3",
 
+        "tedivm/jshrink": "~1.0",
+        "oyejorge/less.php": ">=1.7",
+        "imagine/imagine": "~0.5.0",
+
+        "danielstjules/stringy": ">=1.5.1",
+        "jwage/purl": "v0.0.4",
+
         "symfony/dependency-injection": "2.4.*",
         "symfony/http-kernel": "2.4.*",
         "symfony/property-access": "2.4.*",
