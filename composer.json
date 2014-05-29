@@ -1,0 +1,13 @@
+{
+    "name": "mikoweb/vsymfo-core",
+    "type": "library",
+    "description": "vSymfo Core Library",
+    "homepage": "http://vision-web.pl",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "autoload": {
+        "psr-0": { "vSymfo\\Core": "" }
+    },
+    "target-dir": "vSymfo/Core"
+}
