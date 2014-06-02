@@ -31,8 +31,8 @@ abstract class FileLoaderAbstract extends FileLoader
     protected static $yaml = array();
 
     /**
-     * opcje (dostęp jak do tablicy)
-     * @var OptionsResolver
+     * opcje
+     * @var array
      */
     protected $options = array();
 
