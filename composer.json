@@ -30,10 +30,5 @@
     "autoload": {
         "psr-0": { "vSymfo\\Core\\": "" }
     },
-    "target-dir": "vSymfo/Core",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "dev-trunk"
-        }
-    }
+    "target-dir": "vSymfo/Core"
 }
