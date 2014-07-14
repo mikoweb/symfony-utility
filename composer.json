@@ -30,5 +30,7 @@
     "autoload": {
         "psr-0": { "vSymfo\\Core\\": "" }
     },
-    "target-dir": "vSymfo/Core"
+    "target-dir": "vSymfo/Core",
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
