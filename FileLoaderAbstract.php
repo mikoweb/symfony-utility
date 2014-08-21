@@ -89,6 +89,17 @@ abstract class FileLoaderAbstract extends FileLoader
      */
     final protected function writeCache(ConfigCache $cache, FileResource $resource, $content)
     {
+        /**
+         * Może być taka sytuacja, że plik konfiguracyjny jest pusty,
+         * jest to dopuszczalne. Jednak do prawidłowego działania klasy
+         * potrzebny jest typ tablicowy lub obiektowy. Zatem gdy zmienna
+         * $content nie jest tablicą ani obiektem trzeba wartość tej zmiennej
+         * zapisać to pierwszego indeksu nowo powstałej tablicy.
+         */
+        if (!is_array($content) && !is_object($content)) {
+            $content = array($content);
+        }
+
         $cache->write('<?php return unserialize('.var_export(serialize($content), true).');', array($resource));
     }
 
