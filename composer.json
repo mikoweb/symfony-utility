@@ -15,7 +15,7 @@
         "php": ">=5.3.3",
 
         "danielstjules/stringy": ">=1.5.1",
-        "jwage/purl": "v0.0.6",
+        "jwage/purl": "v0.0.5",
 
         "tedivm/jshrink": "~1.0",
         "oyejorge/less.php": "~1.7",
