@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CoreBundle;
+namespace vSymfo\Core;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
