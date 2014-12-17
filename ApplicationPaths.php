@@ -132,7 +132,7 @@ final class ApplicationPaths
     /**
      * Absolutna ścieżka dostepu do katalogu
      * @param string $name
-     * @return string|false
+     * @return string
      */
     public function absolute($name)
     {
@@ -142,14 +142,14 @@ final class ApplicationPaths
             return $this->webPath . self::WEB_THEMES . '/' . $this->getThemeName();
         }
 
-        return false;
+        throw new \UnexpectedValueException("Undefined path: '$name'");
     }
 
     /**
      * Ścieżka w adresie URL
      * @param string $name
      * @param bool $baseurl
-     * @return string|false
+     * @return string
      */
     public function url($name, $baseurl = true)
     {
@@ -167,6 +167,6 @@ final class ApplicationPaths
             return $this->getBasePath();
         }
 
-        return false;
+        throw new \UnexpectedValueException("Undefined path: '$name'");
     }
 }
