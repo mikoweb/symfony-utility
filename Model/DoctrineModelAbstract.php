@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Entity;
+namespace vSymfo\Core\Model;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
