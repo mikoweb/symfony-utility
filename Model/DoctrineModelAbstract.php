@@ -49,6 +49,6 @@ abstract class DoctrineModelAbstract implements DoctrineModelInterface
      */
     public function getEntityManager()
     {
-        return $this->doctrine->getEntityManager();
+        return $this->doctrine->getManager();
     }
 }
