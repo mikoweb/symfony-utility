@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core;
+namespace vSymfo\Core\Interfaces;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -18,6 +18,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * Interfejs, który musi implemetować EventDispatcher'a
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Core
+ * @subpackage Interfaces
  */
 interface DispatchableInterface
 {
