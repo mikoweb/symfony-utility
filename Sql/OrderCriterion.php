@@ -20,7 +20,7 @@ use vSymfo\Core\Sql\Exception\InvalidOrderException;
  * @package vSymfo Core
  * @subpackage Sql
  */
-class OrderByCriterion
+class OrderCriterion
 {
     /**
      * Kolejność rosnąca
@@ -58,9 +58,9 @@ class OrderByCriterion
     /**
      * @param string $defaultOrder
      */
-    public function __construct($defaultOrder = OrderByCriterion::ORDER_ASC)
+    public function __construct($defaultOrder = OrderCriterion::ORDER_ASC)
     {
-        $this->defaultOrder = OrderByCriterion::ORDER_ASC;
+        $this->defaultOrder = OrderCriterion::ORDER_ASC;
         $this->setDefaultOrder($defaultOrder);
         $this->order = $this->getDefaultOrder();
     }
@@ -73,9 +73,9 @@ class OrderByCriterion
     protected function _buildOrder($order)
     {
         $uorder = strtoupper((string)$order);
-        if ($uorder !== OrderByCriterion::ORDER_ASC
-            && $uorder !== OrderByCriterion::ORDER_DESC
-            && $uorder !== OrderByCriterion::ORDER_DEFAULT
+        if ($uorder !== OrderCriterion::ORDER_ASC
+            && $uorder !== OrderCriterion::ORDER_DESC
+            && $uorder !== OrderCriterion::ORDER_DEFAULT
         ) {
             throw new InvalidOrderException("Unexpected order value: $order");
         }
@@ -97,7 +97,7 @@ class OrderByCriterion
     public function setDefaultOrder($order)
     {
         $order = $this->_buildOrder($order);
-        if ($order === OrderByCriterion::ORDER_DEFAULT) {
+        if ($order === OrderCriterion::ORDER_DEFAULT) {
             $this->defaultOrder = $this->getDefaultOrder();
         } else {
             $this->defaultOrder = $order;
@@ -110,7 +110,7 @@ class OrderByCriterion
      */
     public function getOrder($useDefault = true)
     {
-        if ($useDefault && $this->order === OrderByCriterion::ORDER_DEFAULT) {
+        if ($useDefault && $this->order === OrderCriterion::ORDER_DEFAULT) {
             return $this->getDefaultOrder();
         } else {
             return $this->order;

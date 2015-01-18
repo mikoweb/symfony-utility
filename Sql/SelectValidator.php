@@ -12,7 +12,6 @@
 
 namespace vSymfo\Core\Sql;
 
-use Collections\Collection;
 use vSymfo\Core\Sql\Exception\InvalidColumnNameException;
 use vSymfo\Core\Sql\Exception\UnexpectedColumnNameException;
 
@@ -26,7 +25,7 @@ class SelectValidator
 {
     /**
      * Domyślna kolejność
-     * @var OrderByCriterion
+     * @var OrderCriterion
      */
     protected $defaultOrderBy;
 
@@ -38,7 +37,7 @@ class SelectValidator
 
     public function __construct()
     {
-        $this->defaultOrderBy = new OrderByCriterion(OrderByCriterion::ORDER_ASC);
+        $this->defaultOrderBy = new OrderCriterion(OrderCriterion::ORDER_ASC);
     }
 
     /**
@@ -120,19 +119,15 @@ class SelectValidator
 
     /**
      * Klauzula ORDER BY
-     * @param Collection $criteria
+     * @param OrderCriterionCollection $criteria
      * @param string|null $allowedAlias
      * @param bool $prependDefaultOrder
-     * @return Collection
+     * @return OrderCriterionCollection
      * @throws InvalidColumnNameException
      * @throws UnexpectedColumnNameException
      */
-    public function orderBy(Collection $criteria, $allowedAlias = null, $prependDefaultOrder = false)
+    public function orderBy(OrderCriterionCollection $criteria, $allowedAlias = null, $prependDefaultOrder = false)
     {
-        if ('vSymfo\Core\Sql\OrderByCriterion' != $criteria->getObjectName()) {
-            throw new \InvalidArgumentException('Collection must be a collection of vSymfo\Core\Sql\OrderByCriterion');
-        }
-
         foreach($criteria as $criterion) {
             $criterion->setDefaultOrder($this->getDefaultOrder());
             Utility::validColumnName($criterion->getBy());
@@ -146,10 +141,10 @@ class SelectValidator
             }
         }
 
-        $result = new Collection($criteria->getObjectName());
+        $result = new OrderCriterionCollection();
         $defaultBy = $this->defaultOrderBy->getBy();
         if ($prependDefaultOrder && !empty($defaultBy)) {
-            $order = new OrderByCriterion();
+            $order = new OrderCriterion();
             $order->setOrder($this->defaultOrderBy->getDefaultOrder());
             $order->setBy($defaultBy);
             $order->setOrder($this->defaultOrderBy->getOrder());
