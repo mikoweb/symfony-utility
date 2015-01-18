@@ -35,15 +35,16 @@ class OrderByCriterionTest extends \PHPUnit_Framework_TestCase
         } catch (InvalidOrderException $e) {
             $this->assertTrue(true);
         }
-        
+
+        $ordeby->setDefaultOrder(OrderCriterion::ORDER_DEFAULT);
+        $this->assertEquals($ordeby->getDefaultOrder(), OrderCriterion::ORDER_ASC);
+        $ordeby->setOrder(OrderCriterion::ORDER_DEFAULT);
+        $this->assertEquals($ordeby->getOrder(false), OrderCriterion::ORDER_DEFAULT);
+        $this->assertEquals($ordeby->getOrder(), OrderCriterion::ORDER_ASC);
+
         $ordeby->setDefaultOrder(OrderCriterion::ORDER_DESC);
         $this->assertEquals($ordeby->getDefaultOrder(), OrderCriterion::ORDER_DESC);
         $ordeby->setOrder(OrderCriterion::ORDER_DESC);
-        $this->assertEquals($ordeby->getOrder(), OrderCriterion::ORDER_DESC);
-
-        $ordeby->setDefaultOrder(OrderCriterion::ORDER_DEFAULT);
-        $this->assertEquals($ordeby->getDefaultOrder(), OrderCriterion::ORDER_DESC);
-        $ordeby->setOrder(OrderCriterion::ORDER_DEFAULT);
         $this->assertEquals($ordeby->getOrder(), OrderCriterion::ORDER_DESC);
 
         $ordeby->setDefaultOrder(OrderCriterion::ORDER_ASC);
