@@ -26,4 +26,26 @@ class OrderCriterionCollection extends Collection
     {
         parent::__construct('vSymfo\Core\Sql\OrderCriterion');
     }
+
+    /**
+     * Wstawianie nowych elementów na podstawie łańcucha znaków w formacie:
+     * t.column1:desc,t.column2:asc,t.column3:default
+     *
+     * @param string $text
+     */
+    public function addFromString($text)
+    {
+        if (!is_string($text)) {
+            throw new \InvalidArgumentException('$text is not string');
+        }
+
+        $list = explode(',', $text);
+        foreach ($list as $order) {
+            $arg = explode(':', $order);
+            $criterion = new OrderCriterion();
+            $criterion->setBy($arg[0]);
+            $criterion->setOrder($arg[1]);
+            $this->add($criterion);
+        }
+    }
 }

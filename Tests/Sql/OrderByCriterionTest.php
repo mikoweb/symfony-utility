@@ -11,6 +11,7 @@
  */
 
 use vSymfo\Core\Sql\OrderCriterion;
+use vSymfo\Core\Sql\OrderCriterionCollection;
 use vSymfo\Core\Sql\Exception\InvalidOrderException;
 
 class OrderByCriterionTest extends \PHPUnit_Framework_TestCase
@@ -66,5 +67,22 @@ class OrderByCriterionTest extends \PHPUnit_Framework_TestCase
         $ordeby->setOrder(OrderCriterion::ORDER_DEFAULT);
         $this->assertEquals($ordeby->getOrder(), $ordeby->getDefaultOrder());
         $this->assertEquals($ordeby->getOrder(false), OrderCriterion::ORDER_DEFAULT);
+    }
+
+    public function testCollectionFromString()
+    {
+        $collection = new OrderCriterionCollection();
+        $collection->addFromString('d.deposit:default');
+        $arr = $collection->toArray();
+        $this->assertEquals($arr[0]->getOrder(false), OrderCriterion::ORDER_DEFAULT);
+        $this->assertEquals($arr[0]->getBy(), 'd.deposit');
+
+        $collection = new OrderCriterionCollection();
+        $collection->addFromString('t.column1:desc,t.column2:asc');
+        $arr = $collection->toArray();
+        $this->assertEquals($arr[0]->getOrder(), OrderCriterion::ORDER_DESC);
+        $this->assertEquals($arr[0]->getBy(), 't.column1');
+        $this->assertEquals($arr[1]->getOrder(), OrderCriterion::ORDER_ASC);
+        $this->assertEquals($arr[1]->getBy(), 't.column2');
     }
 }
