@@ -21,6 +21,13 @@ use vSymfo\Core\Sql\Exception\InvalidColumnNameException;
  */
 class Utility
 {
+    const COMPARE_EQUAL = '=';
+    const COMPARE_NOT_EQUAL = '<>';
+    const COMPARE_GREATER = '>';
+    const COMPARE_GREATER_EQUAL = '>=';
+    const COMPARE_LESS = '<';
+    const COMPARE_LESS_EQUAL = '<=';
+
     private function __construct()
     {}
 
