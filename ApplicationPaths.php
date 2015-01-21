@@ -126,7 +126,13 @@ final class ApplicationPaths
      */
     public function getBasePath()
     {
-        return $this->container->get('request')->getBasePath();
+        try {
+            $request = $this->container->get('request');
+        } catch (\Exception $e) {
+            return '';
+        }
+
+        return $request->getBasePath();
     }
 
     /**
