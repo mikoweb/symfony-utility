@@ -67,7 +67,7 @@ class CombineFilesCacheDB extends \SQLite3
             self::$instance[$filename] = $db;
 
             // sprawdzanie struktury tabeli
-            $results = @$db->query('pragma table_info(' . self::$tableName . ');');
+            $results = @$db->query('pragma table_info(' . static::$tableName . ');');
             $test = array(
                 array(
                     'name' => 'filepath',
@@ -90,19 +90,19 @@ class CombineFilesCacheDB extends \SQLite3
                 $i++;
             }
             if ($del) {
-                $db->exec('DROP TABLE IF EXISTS ' . self::$tableName . ';');
+                $db->exec('DROP TABLE IF EXISTS ' . static::$tableName . ';');
             }
 
             // tworzenie tabeli jeśli nie istnieje
             if (!$db->exec(
-                'CREATE TABLE IF NOT EXISTS ' . self::$tableName . '
+                'CREATE TABLE IF NOT EXISTS ' . static::$tableName . '
                 (
                     filepath text NOT NULL UNIQUE,
                     serialize text NOT NULL,
                     PRIMARY KEY (filepath)
                 );')
             ) {
-                throw new \LogicException('create ' . self::$tableName . ' table failed');
+                throw new \LogicException('create ' . static::$tableName . ' table failed');
             }
         }
 
@@ -135,7 +135,7 @@ class CombineFilesCacheDB extends \SQLite3
     public function select($filepath)
     {
         $results = $this->query(
-            "SELECT filepath, serialize FROM " . self::$tableName . " WHERE filepath='$filepath' LIMIT 1"
+            "SELECT filepath, serialize FROM " . static::$tableName . " WHERE filepath='$filepath' LIMIT 1"
         );
         $row = $results->fetchArray();
         if (!empty($row)) {
@@ -156,7 +156,7 @@ class CombineFilesCacheDB extends \SQLite3
     public function insert($filepath, array $serialize)
     {
         return @$this->exec(
-            "INSERT INTO " . self::$tableName . "(filepath, serialize) VALUES ('$filepath', '" . $this->serialize($serialize) . "');"
+            "INSERT INTO " . static::$tableName . "(filepath, serialize) VALUES ('$filepath', '" . $this->serialize($serialize) . "');"
         );
     }
 
@@ -168,7 +168,7 @@ class CombineFilesCacheDB extends \SQLite3
     public function update($filepath, array $serialize)
     {
         return $this->exec(
-            "UPDATE " . self::$tableName . " SET serialize='" . $this->serialize($serialize) . "' WHERE filepath='$filepath';"
+            "UPDATE " . static::$tableName . " SET serialize='" . $this->serialize($serialize) . "' WHERE filepath='$filepath';"
         );
     }
 
@@ -178,7 +178,7 @@ class CombineFilesCacheDB extends \SQLite3
      */
     public function delete($filepath)
     {
-        return $this->exec("DELETE FROM " . self::$tableName . " WHERE filepath='$filepath';");
+        return $this->exec("DELETE FROM " . static::$tableName . " WHERE filepath='$filepath';");
     }
 
     /**
