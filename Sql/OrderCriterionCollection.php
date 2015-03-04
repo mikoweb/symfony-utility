@@ -42,6 +42,10 @@ class OrderCriterionCollection extends Collection
         $list = explode(',', $text);
         foreach ($list as $order) {
             $arg = explode(':', $order);
+            if (count($arg) < 2) {
+                throw new \InvalidArgumentException("Invalid order format");
+            }
+
             $criterion = new OrderCriterion();
             $criterion->setBy($arg[0]);
             $criterion->setOrder($arg[1]);
