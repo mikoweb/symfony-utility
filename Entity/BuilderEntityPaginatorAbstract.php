@@ -1,0 +1,176 @@
+<?php
+
+/*
+ * This file is part of the vSymfo package.
+ *
+ * website: www.vision-web.pl
+ * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace vSymfo\Core\Entity;
+
+use AshleyDawson\SimplePagination\Paginator;
+use Doctrine\ORM\QueryBuilder;
+use vSymfo\Core\Sql\SelectValidator;
+use vSymfo\Core\Entity\Paginator\PaginatorBuilderInterface;
+
+/**
+ * Rozszerzenie klasy EntityPaginatorAbstract o możliwość tworzenia paginatora z gotowymi zapytaniami.
+ * Dzięki klasie PaginatorBuilder można dostosowywać zapytanie SQL na zewnątrz obiektu.
+ *
+ * @author Rafał Mikołajun <rafal@vision-web.pl>
+ * @package vSymfo Core
+ * @subpackage Entity
+ */
+abstract class BuilderEntityPaginatorAbstract extends EntityPaginatorAbstract
+{
+    /**
+     * Tworzenie w pełni skonfigurowanego obiektu paginatora
+     * @param PaginatorBuilderInterface $builder
+     * @param array $options
+     * @return Paginator
+     */
+    public function getPaginator(PaginatorBuilderInterface $builder, array $options = array())
+    {
+        $that = $this;
+        $builder->setOptions($options);
+        $paginator = $this->createPaginator();
+
+        // walidator zapytań
+        $sv = new SelectValidator();
+        if ($builder->isUseDefaultOrderBy()) {
+            $this->defaultOrderBy($sv, $builder->getOptions());
+        }
+
+        // dozwolone kolumny w klauzuli ORDER BY
+        if ($builder->isUseDefaultAllowedOrderColumns()) {
+            $this->defaultAllowedOrderColumns($sv, $builder->getOptions());
+        }
+
+        $builder->customSelectValidator($sv);
+
+        // Pass our item total callback
+        $paginator->setItemTotalCallback(function () use ($that, $builder) {
+            $qb = $that->createQueryBuilderCount($builder->getOptions());
+
+            if (!($qb instanceof QueryBuilder)) {
+                throw new \Exception("Invalid QueryBuilder object");
+            }
+
+            if ($builder->isUseDefaultJoins()) {
+                $that->defaultJoins($qb, $builder->getOptions());
+            }
+
+            if ($builder->isUseDefaultWhere()) {
+                $that->defaultWhere($qb, $builder->getOptions());
+            }
+
+            $builder->customCountQuery($qb);
+            $query = $qb->getQuery();
+
+            return (int)$query->getSingleScalarResult();
+        });
+
+        // Pass our slice callback
+        $paginator->setSliceCallback(function ($offset, $length) use ($that, $builder, $sv) {
+            $qb = $that->createQueryBuilderSelect();
+
+            if (!($qb instanceof QueryBuilder)) {
+                throw new \Exception("Invalid QueryBuilder object");
+            }
+
+            if ($builder->isUseDefaultSelect()) {
+                $that->defaultSelect($qb, $builder->isUseDefaultJoins(), $builder->getOptions());
+            }
+
+            if ($builder->isUseDefaultJoins()) {
+                $that->defaultJoins($qb, $builder->getOptions());
+            }
+
+            if ($builder->isUseDefaultWhere()) {
+                $that->defaultWhere($qb, $builder->getOptions());
+            }
+
+            $qb
+                ->setFirstResult($offset)
+                ->setMaxResults($length)
+            ;
+
+            $criteria = $sv->orderBy($builder->getOrderCriteria());
+            if ($criteria->count()) {
+                // kolejność na bazie kolekcji OrderCriterion
+                foreach ($criteria as $order) {
+                    $qb->addOrderBy($order->getBy(), $order->getOrder());
+                }
+            } elseif ($builder->isUseDefaultOrderBy()) {
+                // domyślna kolejność
+                $qb->orderBy($sv->getDefaultOrderColumn(), $sv->getDefaultOrder());
+            }
+
+            $builder->customSelectQuery($qb);
+            $query = $qb->getQuery();
+
+            return $query->getResult();
+        });
+
+        return $paginator;
+    }
+
+    /**
+     * Tworzenie zapytania zliczającego rekordy
+     * @param array $options
+     * @return QueryBuilder
+     */
+    abstract public function createQueryBuilderCount(array $options = array());
+
+    /**
+     * Tworzenie zapytania wybierającego
+     * @param array $options
+     * @return QueryBuilder
+     */
+    abstract public function createQueryBuilderSelect(array $options = array());
+
+    /**
+     * Domyślne kryteria sortowania
+     * @param SelectValidator $validator
+     * @param array $options
+     * @return void
+     */
+    abstract protected function defaultOrderBy(SelectValidator $validator, array $options = array());
+
+    /**
+     * Domyślne dozwolone kolumny w klauzuli ORDER BY
+     * @param SelectValidator $validator
+     * @param array $options
+     * @return void
+     */
+    abstract protected function defaultAllowedOrderColumns(SelectValidator $validator, array $options = array());
+
+    /**
+     * Domyślne joiny
+     * @param QueryBuilder $qb
+     * @param array $options
+     * @return void
+     */
+    abstract public function defaultJoins(QueryBuilder $qb, array $options = array());
+
+    /**
+     * Domyślne klauzula where
+     * @param QueryBuilder $qb
+     * @param array $options
+     * @return void
+     */
+    abstract public function defaultWhere(QueryBuilder $qb, array $options = array());
+
+    /**
+     * Domyślna klauzula SELECT
+     * @param QueryBuilder $qb
+     * @param bool $useJoins czy użyto joinów
+     * @param array $options
+     * @return void
+     */
+    abstract public function defaultSelect(QueryBuilder $qb, $useJoins, array $options = array());
+}
