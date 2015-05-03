@@ -53,7 +53,7 @@ class PaginatorBuilder implements PaginatorBuilderInterface
      * Czy użyć domyślnych joinów
      * @var bool
      */
-    protected $useDefaultJoins = true;
+    protected $useDefaultJoins = false;
 
     /**
      * Czy użyć domyślnej klauzuli where?

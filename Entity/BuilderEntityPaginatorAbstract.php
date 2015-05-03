@@ -61,7 +61,7 @@ abstract class BuilderEntityPaginatorAbstract extends EntityPaginatorAbstract
             }
 
             if ($builder->isUseDefaultJoins()) {
-                $that->defaultJoins($qb, $builder->getOptions());
+                $that->defaultJoins($qb, true, $builder->getOptions());
             }
 
             if ($builder->isUseDefaultWhere()) {
@@ -87,7 +87,7 @@ abstract class BuilderEntityPaginatorAbstract extends EntityPaginatorAbstract
             }
 
             if ($builder->isUseDefaultJoins()) {
-                $that->defaultJoins($qb, $builder->getOptions());
+                $that->defaultJoins($qb, false, $builder->getOptions());
             }
 
             if ($builder->isUseDefaultWhere()) {
@@ -152,10 +152,11 @@ abstract class BuilderEntityPaginatorAbstract extends EntityPaginatorAbstract
     /**
      * Domyślne joiny
      * @param QueryBuilder $qb
+     * @param bool isCount czy to jest zapytanie zliczające
      * @param array $options
      * @return void
      */
-    abstract public function defaultJoins(QueryBuilder $qb, array $options = array());
+    abstract public function defaultJoins(QueryBuilder $qb, $isCount = false, array $options = array());
 
     /**
      * Domyślne klauzula where
