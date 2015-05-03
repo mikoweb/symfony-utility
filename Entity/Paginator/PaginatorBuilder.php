@@ -116,6 +116,14 @@ class PaginatorBuilder implements PaginatorBuilderInterface
     /**
      * {@inheritdoc}
      */
+    public function getCustomSelectValidator()
+    {
+        return $this->customSelectValidator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setCustomSelectValidator(Closure $customSelectValidator)
     {
         $this->customSelectValidator = $customSelectValidator;
@@ -132,6 +140,14 @@ class PaginatorBuilder implements PaginatorBuilderInterface
     /**
      * {@inheritdoc}
      */
+    public function getCustomCountQuery()
+    {
+        return $this->customCountQuery;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setCustomCountQuery(Closure $customCountQuery)
     {
         $this->customCountQuery = $customCountQuery;
@@ -143,6 +159,14 @@ class PaginatorBuilder implements PaginatorBuilderInterface
     public function customCountQuery(QueryBuilder $qb)
     {
         call_user_func($this->customCountQuery, $qb);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomSelectQuery()
+    {
+        return $this->customSelectQuery;
     }
 
     /**

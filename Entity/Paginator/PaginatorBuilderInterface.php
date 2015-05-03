@@ -38,6 +38,12 @@ interface PaginatorBuilderInterface
     public function setOrderCriteria(OrderCriterionCollection $orderCriteria);
 
     /**
+     * Pobierz funkcję obrabiającą obiekt SelectValidator
+     * @return Closure
+     */
+    public function getCustomSelectValidator();
+
+    /**
      * Ustaw funkcję obrabiającą obiekt SelectValidator
      * @param callable $customSelectValidator
      */
@@ -50,6 +56,12 @@ interface PaginatorBuilderInterface
     public function customSelectValidator(SelectValidator $validator);
 
     /**
+     * Pobierz funkcje generującą własne zapytanie zliczające.
+     * @return Closure
+     */
+    public function getCustomCountQuery();
+
+    /**
      * Ustaw funkcje generującą własne zapytanie zliczające.
      * @param callable $customCountQuery
      */
@@ -60,6 +72,12 @@ interface PaginatorBuilderInterface
      * @param QueryBuilder $qb
      */
     public function customCountQuery(QueryBuilder $qb);
+
+    /**
+     * Pobierz funkcję generującą własne zapytanie wybierające.
+     * @return Closure
+     */
+    public function getCustomSelectQuery();
 
     /**
      * Ustaw funkcję generującą własne zapytanie wybierające.
