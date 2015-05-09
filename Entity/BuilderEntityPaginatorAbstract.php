@@ -94,11 +94,6 @@ abstract class BuilderEntityPaginatorAbstract extends EntityPaginatorAbstract
                 $that->defaultWhere($qb, $builder->getOptions());
             }
 
-            $qb
-                ->setFirstResult($offset)
-                ->setMaxResults($length)
-            ;
-
             $criteria = $sv->orderBy($builder->getOrderCriteria());
             if ($criteria->count()) {
                 // kolejność na bazie kolekcji OrderCriterion
@@ -111,6 +106,23 @@ abstract class BuilderEntityPaginatorAbstract extends EntityPaginatorAbstract
             }
 
             $builder->customSelectQuery($qb);
+
+            if ($that->isIdsQueryEnabled()) {
+                // używanie dodatkowego zapytania w przypadku relacji jeden do wielu
+                $qbIds = clone $qb;
+                $qbIds
+                    ->setFirstResult($offset)
+                    ->setMaxResults($length)
+                ;
+                $that->idsQuery($qb, $qbIds);
+            } else {
+                // w pozostałych sytuacjach można używać offset i length na zapytaniu głównym
+                $qb
+                    ->setFirstResult($offset)
+                    ->setMaxResults($length)
+                ;
+            }
+
             $query = $qb->getQuery();
 
             return $query->getResult();
@@ -132,6 +144,31 @@ abstract class BuilderEntityPaginatorAbstract extends EntityPaginatorAbstract
      * @return QueryBuilder
      */
     abstract public function createQueryBuilderSelect(array $options = array());
+
+    /**
+     * Czy dodatkowe zapytanie wybierające same klucze główne ma być włączone?
+     * Ta opcja jest zalecane w przypadku złączeń jeden do wielu.
+     * W takim przypadku w głównym zapytaniu zostanie pominięta klauzula LIMIT, OFFSET.
+     * @return bool
+     */
+    abstract public function isIdsQueryEnabled();
+
+    /**
+     * Dodatkowe zapytanie używane gdy isIdsQueryEnabled() zwraca true.
+     * Zalecane w sytuacji kiedy używamy złączeń jeden do wielu.
+     * @param QueryBuilder $qb
+     * @param QueryBuilder $qbIds
+     */
+    abstract public function idsQuery(QueryBuilder $qb, QueryBuilder $qbIds);
+
+    /**
+     * Domyślna klauzula SELECT
+     * @param QueryBuilder $qb
+     * @param bool $useJoins czy użyto joinów
+     * @param array $options
+     * @return void
+     */
+    abstract public function defaultSelect(QueryBuilder $qb, $useJoins, array $options = array());
 
     /**
      * Domyślne kryteria sortowania
@@ -165,13 +202,4 @@ abstract class BuilderEntityPaginatorAbstract extends EntityPaginatorAbstract
      * @return void
      */
     abstract public function defaultWhere(QueryBuilder $qb, array $options = array());
-
-    /**
-     * Domyślna klauzula SELECT
-     * @param QueryBuilder $qb
-     * @param bool $useJoins czy użyto joinów
-     * @param array $options
-     * @return void
-     */
-    abstract public function defaultSelect(QueryBuilder $qb, $useJoins, array $options = array());
 }
