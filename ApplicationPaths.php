@@ -160,15 +160,11 @@ final class ApplicationPaths
     public function url($name, $baseurl = true)
     {
         if (isset($this->urlPath[$name])) {
-            if ($baseurl)
-                return $this->getBasePath() . $this->urlPath[$name];
-            else
-                return $this->urlPath[$name];
+            return $baseurl ? $this->getBasePath() . $this->urlPath[$name] : $this->urlPath[$name];
         } elseif ($name == "web_theme") {
-            if ($baseurl)
-                return $this->getBasePath() . self::WEB_THEMES . '/' . $this->getThemeName();
-            else
-                return self::WEB_THEMES . '/' . $this->getThemeName();
+            return $baseurl
+                ? $this->getBasePath() . self::WEB_THEMES . '/' . $this->getThemeName()
+                : self::WEB_THEMES . '/' . $this->getThemeName();
         } elseif ($name == "base" || $name == "web") {
             return $this->getBasePath();
         }
