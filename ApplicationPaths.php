@@ -33,24 +33,24 @@ final class ApplicationPaths
     const WEB_RESOURCES = "/resources";
 
     /**
-     * Ścieżka do folderu z zasobami
+     * Ścieżka do motywam graficznymi
      * @const string
      */
     const WEB_THEMES = "/theme";
 
     /**
-     * Ścieżka do folderu z zasobami
+     * Ścieżka do folderu WebUI
      * @const string
      */
     const WEB_WEBUI = "/resources/webui";
 
     /**
-     * Ścieżka do folderu z cache'm motywów graficznych.
+     * Cache zasobów webowych
      */
     const WEB_CACHE = "/cache";
 
     /**
-     * Ścieżka do folderu z zasobami
+     * Engine WebUI
      * @const string
      */
     const WEB_WEBUI_ENGINE = "/resources/engine";
