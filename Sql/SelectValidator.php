@@ -16,7 +16,7 @@ use vSymfo\Core\Sql\Exception\InvalidColumnNameException;
 use vSymfo\Core\Sql\Exception\UnexpectedColumnNameException;
 
 /**
- * MBudowniczy zapytań wybierających
+ * Walidator zapytań wybierających
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Core
  * @subpackage Sql
