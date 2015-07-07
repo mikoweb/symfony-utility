@@ -33,7 +33,7 @@ final class ApplicationPaths
     const WEB_RESOURCES = "/resources";
 
     /**
-     * Ścieżka do motywam graficznymi
+     * Ścieżka do folderu z motywam graficznymi
      * @const string
      */
     const WEB_THEMES = "/theme";
