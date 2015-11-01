@@ -33,6 +33,19 @@ trait DocumentableControllerTrait
     }
 
     /**
+     * @param Response $response
+     *
+     * @return Response
+     */
+    public function renderDocumentResponse(Response $response)
+    {
+        $this->container->get('document')->body($response->getContent());
+        $response->setContent($this->container->get('document')->render());
+
+        return $response;
+    }
+
+    /**
      * Renderowanie widoku z zastosowaniem usługi dokumentu
      *
      * @param string   $view       The view name
@@ -44,9 +57,7 @@ trait DocumentableControllerTrait
     public function renderDocument($view, array $parameters = array(), Response $response = null)
     {
         $response = $this->render($view, $parameters, $response);
-        $this->container->get('document')->body($response->getContent());
-        $response->setContent($this->container->get('document')->render());
 
-        return $response;
+        return $this->renderDocumentResponse($response);
     }
 }
