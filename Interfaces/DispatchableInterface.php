@@ -15,7 +15,6 @@ namespace vSymfo\Core\Interfaces;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Interfejs, który musi implemetować EventDispatcher'a
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Core
  * @subpackage Interfaces

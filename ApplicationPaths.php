@@ -55,7 +55,6 @@ final class ApplicationPaths
      */
     const WEB_WEBUI_ENGINE = "/resources/engine";
 
-
     /**
      * @var ContainerInterface
      */

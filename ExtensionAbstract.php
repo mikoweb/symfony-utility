@@ -23,7 +23,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 abstract class ExtensionAbstract extends SymfonyExtension
 {
     /**
-     * ustaw parametr
+     * Ustaw parametr konfiguracyjny
+     *
      * @param ContainerBuilder $container
      * @param array $config
      * @param string $key
@@ -38,7 +39,8 @@ abstract class ExtensionAbstract extends SymfonyExtension
     }
 
     /**
-     * uwstaw wszystkie parametry z tablicy
+     * Uwstaw wszystkie parametry z tablicy
+     *
      * @param ContainerBuilder $container
      * @param array $config
      * @param string $root

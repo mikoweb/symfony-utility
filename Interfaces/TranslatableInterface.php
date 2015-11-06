@@ -15,7 +15,6 @@ namespace vSymfo\Core\Interfaces;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Interfejs, który musi implemetować Tłumacza
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Core
  * @subpackage Interfaces

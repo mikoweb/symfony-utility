@@ -193,7 +193,7 @@ class CombineFilesCacheDB extends \SQLite3
     }
 
     /**
-     * Zacznij transakcję
+     * Zakończ transakcję
      */
     public function endTransaction()
     {

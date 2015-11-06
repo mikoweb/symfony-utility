@@ -25,13 +25,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 abstract class FileLoaderAbstract extends FileLoader
 {
     /**
-     * lista przetworzonych plików
+     * Lista przetworzonych plików
      * @var array
      */
     protected static $yaml = array();
 
     /**
-     * opcje
+     * Opcje
+     *
      * @var array
      */
     protected $options = array();
@@ -50,6 +51,7 @@ abstract class FileLoaderAbstract extends FileLoader
 
     /**
      * Domyślne opcje
+     *
      * @param OptionsResolver $resolver
      */
     protected function setDefaultOptions(OptionsResolver $resolver)
@@ -66,7 +68,8 @@ abstract class FileLoaderAbstract extends FileLoader
 
 
     /**
-     * odświeżanie danych w cache
+     * Odświeżanie danych w cache
+     *
      * @param string $filename
      * @param ConfigCache $cache
      * @return void
@@ -74,7 +77,8 @@ abstract class FileLoaderAbstract extends FileLoader
     abstract protected function refreshCache($filename, ConfigCache $cache);
 
     /**
-     * zadanie do zrobienia po załadowaniu pliku
+     * Zadanie do zrobienia po załadowaniu pliku
+     *
      * @param string $filename
      * @param null|string $type
      * @return void
@@ -82,7 +86,8 @@ abstract class FileLoaderAbstract extends FileLoader
     abstract protected function process($filename, $type = null);
 
     /**
-     * zapisywanie cache
+     * Zapisywanie cache
+     *
      * @param ConfigCache $cache
      * @param FileResource $resource
      * @param string $content
