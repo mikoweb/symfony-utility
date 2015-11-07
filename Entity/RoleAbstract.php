@@ -43,14 +43,14 @@ abstract class RoleAbstract implements RoleInterface, SoftDeleteableInterface, T
     /**
      * @var string
      *
-     * @ORM\Column(type="string", name="role", nullable=false)
+     * @ORM\Column(type="string", name="role", unique=true, nullable=false)
      */
     protected $role;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", name="name", unique=true, nullable=false)
+     * @ORM\Column(type="string", name="name", nullable=false)
      */
     protected $name;
 
