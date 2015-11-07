@@ -15,7 +15,6 @@ namespace vSymfo\Core\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\GroupInterface;
-use Symfony\Component\Security\Core\Role\RoleInterface;
 use vSymfo\Core\Entity\Interfaces\SoftDeleteableInterface;
 use vSymfo\Core\Entity\Interfaces\TimestampableInterface;
 use vSymfo\Core\Entity\Traits\SoftDeleteableTrait;
@@ -98,10 +97,14 @@ abstract class GroupAbstract implements GroupInterface, SoftDeleteableInterface,
 
     /**
      * @param string $name
+     *
+     * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -114,10 +117,14 @@ abstract class GroupAbstract implements GroupInterface, SoftDeleteableInterface,
 
     /**
      * @param string $groupRole
+     *
+     * @return $this
      */
     public function setGroupRole($groupRole)
     {
         $this->groupRole = $groupRole;
+
+        return $this;
     }
 
     /**
@@ -187,6 +194,8 @@ abstract class GroupAbstract implements GroupInterface, SoftDeleteableInterface,
     public function setRoles(array $roles)
     {
         $this->roles = new ArrayCollection($roles);
+
+        return $this;
     }
 
     /**
@@ -199,10 +208,14 @@ abstract class GroupAbstract implements GroupInterface, SoftDeleteableInterface,
 
     /**
      * @param boolean $irremovable
+     *
+     * @return $this
      */
     public function setIrremovable($irremovable)
     {
         $this->irremovable = $irremovable;
+
+        return $this;
     }
 
     /**
