@@ -56,7 +56,7 @@ abstract class GroupAbstract implements GroupInterface, SoftDeleteableInterface,
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", name="irremovable", options={default="0"})
+     * @ORM\Column(type="boolean", name="irremovable", options={"default": 0}))
      */
     protected $irremovable;
 
