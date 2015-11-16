@@ -19,7 +19,7 @@ use Symfony\Component\Form\Form;
  * @package vSymfo Core
  * @subpackage Manager
  */
-interface ControllerManagerIterface
+interface ControllerManagerInterface
 {
     /**
      * @return mixed

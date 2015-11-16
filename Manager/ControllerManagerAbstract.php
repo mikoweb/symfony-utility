@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormFactory;
  * @package vSymfo Core
  * @subpackage Manager
  */
-abstract class ControllerManagerAbstract implements ControllerManagerIterface
+abstract class ControllerManagerAbstract implements ControllerManagerInterface
 {
     /**
      * @var EntityManager
