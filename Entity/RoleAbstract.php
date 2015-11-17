@@ -55,6 +55,18 @@ abstract class RoleAbstract implements RoleInterface, SoftDeleteableInterface, T
     protected $name;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", name="irremovable", options={"default": 0}))
+     */
+    protected $irremovable;
+
+    public function __construct()
+    {
+        $this->irremovable = false;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
@@ -104,6 +116,26 @@ abstract class RoleAbstract implements RoleInterface, SoftDeleteableInterface, T
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIrremovable()
+    {
+        return $this->irremovable;
+    }
+
+    /**
+     * @param boolean $irremovable
+     *
+     * @return $this
+     */
+    public function setIrremovable($irremovable)
+    {
+        $this->irremovable = $irremovable;
 
         return $this;
     }
