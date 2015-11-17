@@ -139,4 +139,14 @@ abstract class RoleAbstract implements RoleInterface, SoftDeleteableInterface, T
 
         return $this;
     }
+
+    /**
+     * @ORM\PreRemove
+     */
+    public function onPreRemove()
+    {
+        if ($this->isIrremovable()) {
+            throw new ORMException('You can not delete irremovable role.');
+        }
+    }
 }

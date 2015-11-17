@@ -14,6 +14,7 @@ namespace vSymfo\Core\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\ORMException;
 use FOS\UserBundle\Model\GroupInterface;
 use vSymfo\Core\Entity\Interfaces\SoftDeleteableInterface;
 use vSymfo\Core\Entity\Interfaces\TimestampableInterface;
@@ -232,5 +233,15 @@ abstract class GroupAbstract implements GroupInterface, SoftDeleteableInterface,
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * @ORM\PreRemove
+     */
+    public function onPreRemove()
+    {
+        if ($this->isIrremovable()) {
+            throw new ORMException('You can not delete irremovable group.');
+        }
     }
 }
