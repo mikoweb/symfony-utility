@@ -14,10 +14,10 @@ namespace vSymfo\Core\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\ORMException;
 use FOS\UserBundle\Model\GroupInterface;
 use vSymfo\Core\Entity\Interfaces\SoftDeleteableInterface;
 use vSymfo\Core\Entity\Interfaces\TimestampableInterface;
+use vSymfo\Core\Entity\Traits\IrremovableTrait;
 use vSymfo\Core\Entity\Traits\SoftDeleteableTrait;
 use vSymfo\Core\Entity\Traits\TimestampableTrait;
 
@@ -32,6 +32,7 @@ abstract class GroupAbstract implements GroupInterface, SoftDeleteableInterface,
 {
     use SoftDeleteableTrait;
     use TimestampableTrait;
+    use IrremovableTrait;
 
     /**
      * @var int
@@ -53,13 +54,6 @@ abstract class GroupAbstract implements GroupInterface, SoftDeleteableInterface,
      * @ORM\Column(type="string", name="name", unique=true, nullable=false)
      */
     protected $name;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", name="irremovable", options={"default": 0}))
-     */
-    protected $irremovable;
 
     /**
      * @var ArrayCollection
@@ -208,40 +202,10 @@ abstract class GroupAbstract implements GroupInterface, SoftDeleteableInterface,
     }
 
     /**
-     * @return boolean
-     */
-    public function isIrremovable()
-    {
-        return $this->irremovable;
-    }
-
-    /**
-     * @param boolean $irremovable
-     *
-     * @return $this
-     */
-    public function setIrremovable($irremovable)
-    {
-        $this->irremovable = $irremovable;
-
-        return $this;
-    }
-
-    /**
      * @return ArrayCollection
      */
     public function getUsers()
     {
         return $this->users;
-    }
-
-    /**
-     * @ORM\PreRemove
-     */
-    public function onPreRemove()
-    {
-        if ($this->isIrremovable()) {
-            throw new ORMException('You can not delete irremovable group.');
-        }
     }
 }

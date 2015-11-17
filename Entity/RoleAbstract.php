@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use vSymfo\Core\Entity\Interfaces\SoftDeleteableInterface;
 use vSymfo\Core\Entity\Interfaces\TimestampableInterface;
+use vSymfo\Core\Entity\Traits\IrremovableTrait;
 use vSymfo\Core\Entity\Traits\SoftDeleteableTrait;
 use vSymfo\Core\Entity\Traits\TimestampableTrait;
 
@@ -30,6 +31,7 @@ abstract class RoleAbstract implements RoleInterface, SoftDeleteableInterface, T
 {
     use SoftDeleteableTrait;
     use TimestampableTrait;
+    use IrremovableTrait;
 
     /**
      * @var int
@@ -53,13 +55,6 @@ abstract class RoleAbstract implements RoleInterface, SoftDeleteableInterface, T
      * @ORM\Column(type="string", name="name", unique=true, nullable=false)
      */
     protected $name;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", name="irremovable", options={"default": 0}))
-     */
-    protected $irremovable;
 
     public function __construct()
     {
@@ -118,35 +113,5 @@ abstract class RoleAbstract implements RoleInterface, SoftDeleteableInterface, T
         $this->name = $name;
 
         return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isIrremovable()
-    {
-        return $this->irremovable;
-    }
-
-    /**
-     * @param boolean $irremovable
-     *
-     * @return $this
-     */
-    public function setIrremovable($irremovable)
-    {
-        $this->irremovable = $irremovable;
-
-        return $this;
-    }
-
-    /**
-     * @ORM\PreRemove
-     */
-    public function onPreRemove()
-    {
-        if ($this->isIrremovable()) {
-            throw new ORMException('You can not delete irremovable role.');
-        }
     }
 }
