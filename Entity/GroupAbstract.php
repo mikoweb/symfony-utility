@@ -131,13 +131,24 @@ abstract class GroupAbstract implements GroupInterface, SoftDeleteableInterface,
     }
 
     /**
+     * @param string $role
+     *
+     * @return bool
+     */
+    protected function isValidRole($role)
+    {
+        return $role instanceof RoleAbstract
+        || $role === $this->groupRole;
+    }
+
+    /**
      * @param RoleAbstract $role
      *
      * @return $this
      */
     public function addRole($role)
     {
-        if (!$role instanceof RoleAbstract) {
+        if (!$this->isValidRole($role)) {
             throw new \InvalidArgumentException('Role is not RoleAbstract');
         }
 
@@ -155,7 +166,7 @@ abstract class GroupAbstract implements GroupInterface, SoftDeleteableInterface,
      */
     public function hasRole($role)
     {
-        if (!$role instanceof RoleAbstract) {
+        if (!$this->isValidRole($role)) {
             throw new \InvalidArgumentException('Role is not RoleAbstract');
         }
 
@@ -180,7 +191,7 @@ abstract class GroupAbstract implements GroupInterface, SoftDeleteableInterface,
      */
     public function removeRole($role)
     {
-        if (!$role instanceof RoleAbstract) {
+        if (!$this->isValidRole($role)) {
             throw new \InvalidArgumentException('Role is not RoleAbstract');
         }
 
