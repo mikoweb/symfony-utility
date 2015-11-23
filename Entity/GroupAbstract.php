@@ -63,7 +63,7 @@ abstract class GroupAbstract implements GroupInterface, SoftDeleteableInterface,
     /**
      * @var string
      *
-     * @ORM\Column(name="group_role", type="string")
+     * @ORM\Column(name="group_role", type="string", nullable=false)
      */
     protected $groupRole;
 
