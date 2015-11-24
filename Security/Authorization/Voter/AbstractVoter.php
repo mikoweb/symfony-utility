@@ -52,7 +52,7 @@ abstract class AbstractVoter extends BaseVoter implements ContainerAwareInterfac
      */
     protected function getAuthChecker()
     {
-        return $container->get('security.authorization_checker');
+        return $this->container->get('security.authorization_checker');
     }
 
     /**
