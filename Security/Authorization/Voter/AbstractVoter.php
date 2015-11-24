@@ -32,11 +32,6 @@ abstract class AbstractVoter extends BaseVoter implements ContainerAwareInterfac
     protected $container;
 
     /**
-     * @var AuthorizationChecker
-     */
-    protected $authChecker;
-
-    /**
      * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
@@ -50,7 +45,14 @@ abstract class AbstractVoter extends BaseVoter implements ContainerAwareInterfac
         }
 
         $this->container = $container;
-        $this->authChecker = $container->get('security.authorization_checker');
+    }
+
+    /**
+     * @return AuthorizationChecker
+     */
+    protected function getAuthChecker()
+    {
+        return $container->get('security.authorization_checker');
     }
 
     /**
@@ -79,6 +81,6 @@ abstract class AbstractVoter extends BaseVoter implements ContainerAwareInterfac
      */
     protected function accessOwner(BlameableEntityInterface $entity, UserInterface $user, $ownerRole)
     {
-        return $this->isOwner($user, $entity) && $this->authChecker->isGranted($ownerRole);
+        return $this->isOwner($user, $entity) && $this->getAuthChecker()->isGranted($ownerRole);
     }
 }
