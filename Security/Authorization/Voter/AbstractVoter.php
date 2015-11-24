@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\CoreBundle\Security\Authorization\Voter;
+namespace vSymfo\Core\Security\Authorization\Voter;
 
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
