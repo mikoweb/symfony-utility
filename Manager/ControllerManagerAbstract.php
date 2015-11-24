@@ -25,12 +25,12 @@ abstract class ControllerManagerAbstract implements ControllerManagerInterface
     /**
      * @var EntityManager
      */
-    private $manager;
+    protected $manager;
 
     /**
      * @var FormFactory
      */
-    private $formFactory;
+    protected $formFactory;
 
     /**
      * @param EntityManager $manager
