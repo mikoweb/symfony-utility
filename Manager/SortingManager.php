@@ -42,6 +42,11 @@ class SortingManager
     protected $allowedColumns;
 
     /**
+     * @var array
+     */
+    private $custom;
+
+    /**
      * @param string $fieldSort
      * @param string $fieldDirection
      */
@@ -52,6 +57,7 @@ class SortingManager
         $this->setFieldSort($fieldSort);
         $this->setFieldDirection($fieldDirection);
         $this->allowedColumns = [];
+        $this->custom = [];
     }
 
     /**
@@ -103,6 +109,29 @@ class SortingManager
     }
 
     /**
+     * @param string $columnName
+     * @param callable $sort
+     */
+    public function addCustomSort($columnName, callable $sort)
+    {
+        if (!isset($this->custom[$columnName])) {
+            $this->custom[$columnName] = [];
+        }
+
+        $this->custom[$columnName][] = $sort;
+    }
+
+    /**
+     * @param string $columnName
+     */
+    public function removeCustomSort($columnName)
+    {
+        if (isset($this->custom[$columnName])) {
+            unset($this->custom[$columnName]);
+        }
+    }
+
+    /**
      * @param Request $request
      * @param QueryBuilder $queryBuilder
      * @return QueryBuilder
@@ -111,27 +140,87 @@ class SortingManager
      */
     public function sort(Request $request, QueryBuilder $queryBuilder)
     {
-        $direction = strtoupper($request->get($this->getFieldDirection()));
-        $sort = $request->get($this->getFieldSort());
+        $direction = $this->getDirection($request);
+        $sort = $this->getSort($request);
 
         if (!empty($direction) && !empty($sort)) {
             if (!($direction === 'ASC' || $direction === 'DESC')) {
                 throw new NotFoundHttpException('Not found direction');
             }
 
-            if (!preg_match('/^([a-zA-Z0-9_]+[.]{1})?[a-zA-Z0-9_]+$/', $sort)) {
-                throw new NotFoundHttpException('Not found sort column');
+            if (!$this->customSort($queryBuilder, $sort, $direction)) {
+                $this->simpleSort($queryBuilder, $sort, $direction);
             }
-
-            $allowed = $this->getAllowedColumns();
-
-            if (!empty($allowed) && !in_array($sort, $allowed)) {
-                throw new NotFoundHttpException('Unallowed sort column name');
-            }
-
-            $queryBuilder->addOrderBy($sort, $direction);
         }
 
         return $queryBuilder;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string|null
+     */
+    public function getDirection(Request $request)
+    {
+        $direction = $request->get($this->getFieldDirection());
+
+        if (is_null($direction)) {
+            return null;
+        }
+
+        return strtoupper($direction);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string|null
+     */
+    public function getSort(Request $request)
+    {
+        return $request->get($this->getFieldSort());
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param string $sort
+     * @param string $direction
+     *
+     * @throws NotFoundHttpException
+     */
+    protected function simpleSort(QueryBuilder $queryBuilder, $sort, $direction)
+    {
+        if (!preg_match('/^([a-zA-Z0-9_]+[.]{1})?[a-zA-Z0-9_]+$/', $sort)) {
+            throw new NotFoundHttpException('Not found sort column');
+        }
+
+        $allowed = $this->getAllowedColumns();
+
+        if (!empty($allowed) && !in_array($sort, $allowed)) {
+            throw new NotFoundHttpException('Unallowed sort column name');
+        }
+
+        $queryBuilder->addOrderBy($sort, $direction);
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param string $sort
+     * @param string $direction
+     *
+     * @return bool
+     */
+    protected function customSort(QueryBuilder $queryBuilder, $sort, $direction)
+    {
+        if (!isset($this->custom[$sort]) || empty($this->custom[$sort])) {
+            return false;
+        }
+
+        for ($count = count($this->custom[$sort]), $i = 0; $i < $count; ++$i) {
+            $this->custom[$sort][$i]($queryBuilder, $direction);
+        }
+
+        return true;
     }
 }
