@@ -16,7 +16,7 @@ use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
-use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter as BaseVoter;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use vSymfo\Core\Entity\Interfaces\BlameableEntityInterface;
 
 /**
@@ -24,7 +24,7 @@ use vSymfo\Core\Entity\Interfaces\BlameableEntityInterface;
  * @package vSymfo Core
  * @subpackage Security
  */
-abstract class AbstractVoter extends BaseVoter implements ContainerAwareInterface
+abstract class AbstractVoter extends Voter implements ContainerAwareInterface
 {
     /**
      * @var ContainerInterface
