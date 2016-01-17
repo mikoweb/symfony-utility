@@ -13,7 +13,7 @@
 namespace vSymfo\Core\Event;
 
 use Symfony\Component\EventDispatcher\Event;
-use vSymfo\Controller\ActionBuilder;
+use vSymfo\Core\Controller\ActionBuilder;
 
 /**
  * @author Rafał Mikołajun <rafal@vision-web.pl>
