@@ -26,6 +26,14 @@ class Controller extends SymfonyController
     use DocumentableControllerTrait;
 
     /**
+     * {@inheritdoc}
+     */
+    public function render($view, array $parameters = array(), Response $response = null)
+    {
+        return parent::render($this->getViewPrefix() . $view, $parameters, $response);
+    }
+
+    /**
      * Odpowiedź z wyłączoną dyrektywą cache
      * @param Response|RedirectResponse $response
      * @return Response|RedirectResponse
@@ -37,5 +45,13 @@ class Controller extends SymfonyController
         $response->headers->addCacheControlDirective('no-store', true);
 
         return $response;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getViewPrefix()
+    {
+        return '';
     }
 }
