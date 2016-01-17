@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Controller;
+namespace vSymfo\Core\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use vSymfo\Core\Controller;
