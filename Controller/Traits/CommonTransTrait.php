@@ -10,18 +10,25 @@
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Controller;
-
-use Symfony\Component\HttpFoundation\Request;
-use vSymfo\Core\Controller;
-use vSymfo\Core\Controller\Traits\ActionBuildableTrait;
+namespace vSymfo\Core\Controller\Traits;
 
 /**
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Core
- * @subpackage Controller
+ * @subpackage Controller_Traits
  */
-abstract class AbstractBackendController extends Controller
+trait CommonTransTrait
 {
-    use ActionBuildableTrait;
+    /**
+     * @return string
+     */
+    abstract protected function getTransPrefix();
+
+    /**
+     * @return string|null
+     */
+    protected function getTransDomain()
+    {
+        return null;
+    }
 }

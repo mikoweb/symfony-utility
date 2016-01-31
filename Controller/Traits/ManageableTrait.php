@@ -10,18 +10,19 @@
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Controller;
+namespace vSymfo\Core\Controller\Traits;
 
-use Symfony\Component\HttpFoundation\Request;
-use vSymfo\Core\Controller;
-use vSymfo\Core\Controller\Traits\ActionBuildableTrait;
+use vSymfo\Core\Manager\ControllerManagerInterface;
 
 /**
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Core
- * @subpackage Controller
+ * @subpackage Controller_Traits
  */
-abstract class AbstractBackendController extends Controller
+trait ManageableTrait
 {
-    use ActionBuildableTrait;
+    /**
+     * @return ControllerManagerInterface
+     */
+    abstract protected function getManager();
 }

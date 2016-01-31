@@ -21,7 +21,7 @@ use vSymfo\Core\Controller\Traits\ActionBuildableTrait;
  * @package vSymfo Core
  * @subpackage Controller
  */
-abstract class AbstractBackendController extends Controller
+abstract class AbstractFrontendController extends Controller
 {
     use ActionBuildableTrait;
 }
