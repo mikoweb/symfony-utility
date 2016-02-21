@@ -12,7 +12,6 @@
 
 namespace vSymfo\Core\Controller\Traits;
 
-use Symfony\Component\HttpFoundation\Request;
 use vSymfo\Core\Controller\ActionBuilder;
 use vSymfo\Core\Event\ActionBuilderEvent;
 
@@ -27,18 +26,16 @@ trait ActionBuildableTrait
     use CommonTransTrait;
 
     /**
-     * @param Request $request
      * @param string $formType
      * @param mixed $entity
      *
      * @return ActionBuilder
      */
-    public function createActionBuilder(Request $request, $formType, $entity = null)
+    public function createActionBuilder($formType, $entity = null)
     {
         $manager = $this->getManager();
         $builder = new ActionBuilder();
         $builder->createForm($builder, $formType, $manager, $entity);
-        $builder->formHandleRequest($builder, $request);
 
         return $builder;
     }
