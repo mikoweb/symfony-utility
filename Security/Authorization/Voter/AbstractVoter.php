@@ -37,11 +37,7 @@ abstract class AbstractVoter extends Voter implements ContainerAwareInterface
     public function setContainer(ContainerInterface $container = null)
     {
         if (is_null($container)) {
-            throw new \RuntimeException('You can not set the null');
-        }
-
-        if (!is_null($this->container)) {
-            throw new \RuntimeException('The container has already been set');
+            throw new \InvalidArgumentException('Container is null!');
         }
 
         $this->container = $container;
@@ -57,30 +53,26 @@ abstract class AbstractVoter extends Voter implements ContainerAwareInterface
 
     /**
      * @param UserInterface $user
-     * @param BlameableEntityInterface $entity
+     * @param BlameableEntityInterface $object
      *
      * @return bool
      */
-    protected function isOwner(UserInterface $user, BlameableEntityInterface $entity)
+    protected function isOwner(UserInterface $user, BlameableEntityInterface $object)
     {
-        $createdBy = $entity->getCreatedBy();
+        $creator = $object->getCreatedBy();
 
-        if (!$createdBy instanceof UserInterface) {
-            return false;
-        }
-
-        return $createdBy->getId() === $user->getId();
+        return $creator instanceof UserInterface && $user->getId() === $creator->getId();
     }
 
     /**
-     * @param BlameableEntityInterface $entity
+     * @param BlameableEntityInterface $object
      * @param UserInterface $user
-     * @param string $ownerRole
+     * @param string $role
      *
      * @return bool
      */
-    protected function accessOwner(BlameableEntityInterface $entity, UserInterface $user, $ownerRole)
+    protected function accessOwner(BlameableEntityInterface $object, UserInterface $user, $role)
     {
-        return $this->isOwner($user, $entity) && $this->getAuthChecker()->isGranted($ownerRole);
+        return $this->isOwner($user, $object) && $this->getAuthChecker()->isGranted($role);
     }
 }

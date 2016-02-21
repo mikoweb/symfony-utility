@@ -15,7 +15,9 @@ namespace vSymfo\Core\Controller;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Request;
 use vSymfo\Core\Event\ActionBuilderEvent;
+use vSymfo\Core\Manager\ControllerManagerInterface;
 
 /**
  * @author Rafał Mikołajun <rafal@vision-web.pl>
@@ -24,15 +26,13 @@ use vSymfo\Core\Event\ActionBuilderEvent;
  */
 class ActionBuilder
 {
-    const EVENT_BEFORE_HANDLE_REQUEST = 'before_handle_request';
-    const EVENT_AFTER_HANDLE_REQUEST = 'after_handle_request';
-    const BEFORE_SAVE = 'before_save';
-    const AFTER_SAVE = 'after_save';
+    const FORM_TYPE_NEW = 0;
+    const FORM_TYPE_EDIT = 1;
 
     /**
      * @var EventDispatcher
      */
-    protected $eventDispatcher;
+    protected $dispatcher;
 
     /**
      * @var Form|null
@@ -44,11 +44,84 @@ class ActionBuilder
      */
     protected $entity;
 
+    /**
+     * @var array
+     */
+    private $allowedEventNames;
+
     public function __construct()
     {
-        $this->eventDispatcher = new EventDispatcher();
+        $this->dispatcher = new EventDispatcher();
         $this->form = null;
         $this->entity = null;
+        $this->allowedEventNames = [];
+        $this->generateAllowedEventNames();
+    }
+
+    /**
+     * @param ActionBuilder $builder
+     * @param string $formType
+     * @param ControllerManagerInterface $manager
+     * @param mixed $entity
+     */
+    public function createForm(ActionBuilder $builder, $formType, ControllerManagerInterface $manager, $entity = null)
+    {
+        if (is_null($entity)) {
+            $entity = $manager->createEntity();
+        }
+
+        $builder->setEntity($entity);
+
+        switch ($formType) {
+            case self::FORM_TYPE_NEW:
+                $form = $manager->buildFormForNew($entity);
+                break;
+            case self::FORM_TYPE_EDIT:
+                $form = $manager->buildFormForEdit($entity);
+                break;
+            default:
+                throw new \UnexpectedValueException('Unexpected form type');
+        }
+
+        $builder->setForm($form);
+    }
+
+    /**
+     * @param ActionBuilder $builder
+     */
+    protected function throwExceptionIsNoForm(ActionBuilder $builder)
+    {
+        if (is_null($builder->getForm())) {
+            throw new \RuntimeException('Not found form');
+        }
+    }
+
+    /**
+     * @param ActionBuilder $builder
+     * @param Request $request
+     */
+    public function formHandleRequest(ActionBuilder $builder, Request $request)
+    {
+        $this->throwExceptionIsNoForm($builder);
+        $builder->dispatch(ActionBuilderEvent::EVENT_BEFORE_FORM_BIND, $builder->createEvent());
+        $builder->getForm()->handleRequest($request);
+        $builder->dispatch(ActionBuilderEvent::EVENT_AFTER_FORM_BIND, $builder->createEvent());
+    }
+
+    /**
+     * @param ActionBuilder $builder
+     * @param ControllerManagerInterface $manager
+     */
+    public function save(ActionBuilder $builder, ControllerManagerInterface $manager)
+    {
+        $this->throwExceptionIsNoForm($builder);
+        $form = $builder->getForm();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $builder->dispatch(ActionBuilderEvent::EVENT_BEFORE_SAVE, $builder->createEvent());
+            $manager->save($builder->getEntity());
+            $builder->dispatch(ActionBuilderEvent::EVENT_AFTER_SAVE, $builder->createEvent());
+        }
     }
 
     /**
@@ -84,14 +157,14 @@ class ActionBuilder
     }
 
     /**
-     * @param string $eventName
+     * @param string $name
      * @param ActionBuilderEvent $event
      *
      * @return ActionBuilderEvent
      */
-    public function dispatch($eventName, ActionBuilderEvent $event)
+    public function dispatch($name, ActionBuilderEvent $event)
     {
-        $this->eventDispatcher->dispatch($eventName, $event);
+        $this->dispatcher->dispatch($name, $event);
 
         return $event;
     }
@@ -105,12 +178,38 @@ class ActionBuilder
     }
 
     /**
-     * @param string $eventName
+     * @param string $name
      * @param callable $listener
      * @param int $priority
      */
-    public function addListener($eventName, $listener, $priority = 0)
+    public function addListener($name, $listener, $priority = 0)
     {
-        $this->eventDispatcher->addListener($eventName, $listener, $priority);
+        if (!$this->validEventName($name)) {
+            throw new \UnexpectedValueException('Unexpected ActionBuilder event name');
+        }
+
+        $this->dispatcher->addListener($name, $listener, $priority);
+    }
+
+    /**
+     * @param string
+     *
+     * @return bool
+     */
+    protected function validEventName($name)
+    {
+        return in_array($name, $this->allowedEventNames);
+    }
+
+    private function generateAllowedEventNames()
+    {
+        $reflection = new \ReflectionClass(ActionBuilderEvent::class);
+        $consts = $reflection->getConstants();
+
+        foreach ($consts as $name => $value) {
+            if (strpos($name, 'EVENT_') === 0) {
+                $this->allowedEventNames[] = $value;
+            }
+        }
     }
 }

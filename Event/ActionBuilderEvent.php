@@ -22,6 +22,11 @@ use vSymfo\Core\Controller\ActionBuilder;
  */
 class ActionBuilderEvent extends Event
 {
+    const EVENT_BEFORE_FORM_BIND = 'before_form_bind';
+    const EVENT_AFTER_FORM_BIND = 'after_form_bind';
+    const EVENT_BEFORE_SAVE = 'before_save';
+    const EVENT_AFTER_SAVE = 'after_save';
+
     /**
      * @var ActionBuilder
      */
