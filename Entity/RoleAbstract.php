@@ -56,6 +56,13 @@ abstract class RoleAbstract implements RoleInterface, SoftDeleteableInterface, T
      */
     protected $name;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tag", type="string", nullable=false)
+     */
+    protected $tag;
+
     public function __construct()
     {
         $this->irremovable = false;
@@ -113,5 +120,21 @@ abstract class RoleAbstract implements RoleInterface, SoftDeleteableInterface, T
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    /**
+     * @param string $tag
+     */
+    public function setTag($tag)
+    {
+        $this->tag = $tag;
     }
 }
