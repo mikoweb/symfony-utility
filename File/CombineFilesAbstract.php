@@ -388,8 +388,8 @@ abstract class CombineFilesAbstract implements CombineFilesInterface
             $content = '';
             // łączenie plików
             $list = array();
-            foreach ($this->sources as &$source) {
-                $s = $this->fileGetContents($this->inputDir . $source, $cacheArray['files']);
+            foreach ($this->sources as $source) {
+                $s = $this->fileGetContents($this->inputDir . $source, $cacheArray['files'], $source);
                 $cacheArray['files'][$this->inputDir . $source] = @filemtime($this->inputDir . $source);
                 $list[] = $this->inputDir . $source;
                 $content .= $this->processOneFile($s);
@@ -444,7 +444,8 @@ abstract class CombineFilesAbstract implements CombineFilesInterface
      * Pobieranie zawartości pliku
      * @param string $path
      * @param array $cacheFiles
+     * @param string|null $relativePath
      * @return string
      */
-    abstract protected function fileGetContents($path, array &$cacheFiles);
+    abstract protected function fileGetContents($path, array &$cacheFiles, $relativePath = null);
 }
