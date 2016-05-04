@@ -14,7 +14,6 @@ namespace vSymfo\Core;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use vSymfo\Core\Traits\DocumentableControllerTrait;
 
 /**
@@ -35,11 +34,14 @@ class Controller extends SymfonyController
 
     /**
      * Odpowiedź z wyłączoną dyrektywą cache
-     * @param Response|RedirectResponse $response
-     * @return Response|RedirectResponse
+     * 
+     * @param Response $response
+     * 
+     * @return Response
      */
-    public function noCacheResponse($response)
-    {   $response->headers->addCacheControlDirective('no-cache', true);
+    public function noCacheResponse(Response $response)
+    {
+        $response->headers->addCacheControlDirective('no-cache', true);
         $response->headers->addCacheControlDirective('max-age', 0);
         $response->headers->addCacheControlDirective('must-revalidate', true);
         $response->headers->addCacheControlDirective('no-store', true);
