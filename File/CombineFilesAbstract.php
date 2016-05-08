@@ -389,8 +389,8 @@ abstract class CombineFilesAbstract implements CombineFilesInterface
             // łączenie plików
             $list = array();
             foreach ($this->sources as $source) {
-                $s = $this->fileGetContents($this->inputDir . $source, $cacheArray['files'], $source);
                 $cacheArray['files'][$this->inputDir . $source] = @filemtime($this->inputDir . $source);
+                $s = $this->fileGetContents($this->inputDir . $source, $cacheArray['files'], $source);
                 $list[] = $this->inputDir . $source;
                 $content .= $this->processOneFile($s);
             }
