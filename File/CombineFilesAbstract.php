@@ -195,7 +195,7 @@ abstract class CombineFilesAbstract implements CombineFilesInterface
      */
     public function setOutputExtension($ext)
     {
-        if (!is_string($path) || (is_string($path) && !preg_match('/^[a-zA-Z]*$/', $path)))
+        if (!is_string($ext) || (is_string($ext) && !preg_match('/^[a-zA-Z]*$/', $ext)))
             throw new \InvalidArgumentException('Invalid file extension: '.(string)$ext);
 
         $this->outputExtension = '.' . $ext;
