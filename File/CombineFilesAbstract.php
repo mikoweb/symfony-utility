@@ -322,11 +322,17 @@ abstract class CombineFilesAbstract implements CombineFilesInterface
      */
     protected function isExpired()
     {
+        $output = $this->getPath();
+
+        // przypuszczalnie na produkcji można sobie wygenerować pliki ręcznie
+        if (file_exists($output) && $this->outputLifeTime === 0 && !$this->outputForceRefresh) {
+            return false;
+        }
+
         // wymuś odświeżanie pliku
         if (empty($this->cacheDb)) {
             return true;
         } else {
-            $output = $this->getPath();
             $cache = $this->cacheDb->select($output);
 
             // brak danych w pamięci podręcznej
