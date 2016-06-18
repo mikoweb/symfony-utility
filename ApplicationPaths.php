@@ -126,7 +126,7 @@ final class ApplicationPaths
     public function getBasePath()
     {
         try {
-            $request = $this->container->get('request');
+            $request = $this->container->get('request_stack')->getCurrentRequest();
         } catch (\Exception $e) {
             return '';
         }
