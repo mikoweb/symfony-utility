@@ -61,9 +61,7 @@ abstract class FileLoaderAbstract extends FileLoader
             'cache_refresh' => false
         ));
 
-        $resolver->setAllowedTypes(array(
-            'cache_refresh' => 'bool'
-        ));
+        $resolver->setAllowedTypes('cache_refresh', 'bool');
     }
 
 
