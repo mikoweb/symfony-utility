@@ -19,18 +19,10 @@ use vSymfo\Core\Entity\Provider\ImagesProviderInterface;
  * @package vSymfo Core
  * @subpackage Entity
  */
-trait ImagesProviderAwareInterface
+interface ImagesProviderAwareInterface
 {
-    /**
-     * @var ImagesProviderInterface
-     */
-    protected $imagesProvider;
-
     /**
      * @param ImagesProviderInterface $imagesProvider
      */
-    public function setImagesProvider(ImagesProviderInterface $imagesProvider)
-    {
-        $this->imagesProvider = $imagesProvider;
-    }
+    public function setImagesProvider(ImagesProviderInterface $imagesProvider);
 }

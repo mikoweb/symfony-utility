@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Entity\Interfaces;
+namespace vSymfo\Core\Entity\Traits;
 
 use vSymfo\Core\Entity\Provider\ImagesProviderInterface;
 
@@ -19,10 +19,18 @@ use vSymfo\Core\Entity\Provider\ImagesProviderInterface;
  * @package vSymfo Core
  * @subpackage Entity
  */
-interface ImagesProviderAwareTrait
+trait ImagesProviderAwareTrait
 {
+    /**
+     * @var ImagesProviderInterface
+     */
+    protected $imagesProvider;
+
     /**
      * @param ImagesProviderInterface $imagesProvider
      */
-    public function setImagesProvider(ImagesProviderInterface $imagesProvider);
+    public function setImagesProvider(ImagesProviderInterface $imagesProvider)
+    {
+        $this->imagesProvider = $imagesProvider;
+    }
 }
