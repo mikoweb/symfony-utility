@@ -19,6 +19,9 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 /**
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Core
+ * 
+ * @deprecated Używanie tych metod może powodować utrudnienia w dostępie
+ *      do wielowymiarowych hash'ów. Lepiej dziedziczy po klasie symfony.
  */
 abstract class ExtensionAbstract extends SymfonyExtension
 {
