@@ -33,4 +33,16 @@ trait ImagesProviderAwareTrait
     {
         $this->imagesProvider = $imagesProvider;
     }
+
+    /**
+     * Gets the public path for the image
+     *
+     * @param string $fieldName
+     *
+     * @return string
+     */
+    public function assetImage($fieldName)
+    {
+        return $this->imagesProvider->asset($this, $fieldName);
+    }
 }

@@ -25,4 +25,13 @@ interface ImagesProviderAwareInterface
      * @param ImagesProviderInterface $imagesProvider
      */
     public function setImagesProvider(ImagesProviderInterface $imagesProvider);
+
+    /**
+     * Gets the public path for the image
+     * 
+     * @param string $fieldName
+     * 
+     * @return string
+     */
+    public function assetImage($fieldName);
 }
