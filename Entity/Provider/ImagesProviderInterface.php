@@ -38,4 +38,16 @@ interface ImagesProviderInterface
      * @return string The html tags.
      */
     public function render($obj, $fieldName);
+
+    /**
+     * Returns the public path.
+     *
+     * Absolute paths (i.e. http://...) are returned unmodified.
+     *
+     * @param string $path        A public path
+     * @param string $packageName The name of the asset package to use
+     *
+     * @return string A public path which takes into account the base path and URL path
+     */
+    public function getUrl($path, $packageName = null);
 }
