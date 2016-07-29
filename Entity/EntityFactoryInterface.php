@@ -23,10 +23,11 @@ interface EntityFactoryInterface
      * Gets the entity object.
      *
      * @param string $className Class name of the entity.
+     * @param array $args Arguments to pass to a constructor.
      *
      * @return object The entity object.
      */
-    public function entity($className);
+    public function entity($className, array $args = []);
 
     /**
      * Set up the required objects.
