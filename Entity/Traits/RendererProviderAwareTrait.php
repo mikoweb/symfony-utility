@@ -19,7 +19,7 @@ use vSymfo\Core\Entity\Provider\RendererProviderInterface;
  * @package vSymfo Core
  * @subpackage Entity
  */
-trait UrlProviderAwareTrait
+trait RendererProviderAwareTrait
 {
     /**
      * @var RendererProviderInterface
