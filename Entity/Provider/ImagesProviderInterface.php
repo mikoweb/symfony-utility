@@ -34,10 +34,12 @@ interface ImagesProviderInterface
      *
      * @param object $obj       The object.
      * @param string $fieldName The field name.
+     * @param string $format    The render format.
+     * @param string $layout    The layout name.
      *
      * @return string The html tags.
      */
-    public function render($obj, $fieldName);
+    public function render($obj, $fieldName, $format, $layout = null);
 
     /**
      * Returns the public path.
