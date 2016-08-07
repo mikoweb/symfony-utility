@@ -22,9 +22,20 @@ use Symfony\Component\Form\Form;
 interface ControllerManagerInterface
 {
     /**
-     * @return mixed
+     * Gets the new entity object.
+     *
+     * @param array $args Arguments to pass to a constructor.
+     *
+     * @return object
      */
-    public function createEntity();
+    public function createEntity(array $args = []);
+
+    /**
+     * Returns name of entity class.
+     *
+     * @return string
+     */
+    public function getEntityClass();
 
     /**
      * @param $data = null

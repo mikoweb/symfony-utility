@@ -14,6 +14,7 @@ namespace vSymfo\Core\Manager;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactory;
+use vSymfo\Core\Entity\EntityFactoryInterface;
 
 /**
  * @author Rafał Mikołajun <rafal@vision-web.pl>
@@ -33,13 +34,31 @@ abstract class ControllerManagerAbstract implements ControllerManagerInterface
     protected $formFactory;
 
     /**
+     * @var EntityFactoryInterface
+     */
+    protected $entityFactory;
+
+    /**
      * @param EntityManager $manager
      * @param FormFactory $formFactory
+     * @param EntityFactoryInterface $entityFactory
      */
-    public function __construct(EntityManager $manager, FormFactory $formFactory)
-    {
+    public function __construct(
+        EntityManager $manager, 
+        FormFactory $formFactory,
+        EntityFactoryInterface $entityFactory
+    ) {
         $this->manager = $manager;
         $this->formFactory = $formFactory;
+        $this->entityFactory = $entityFactory;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createEntity(array $args = [])
+    {
+        return $this->entityFactory->entity($this->getEntityClass(), $args);
     }
 
     /**
