@@ -220,7 +220,8 @@ abstract class MenuBuilderAbstract
                 $defaults = $route->getDefaults();
                 foreach ($variables as $variable) {
                     if (!isset($options['routeParameters'][$variable]) && !isset($defaults[$variable])) {
-                        $options['routeParameters'][$variable] = $this->request->getCurrentRequest()->get($variable, '0');
+                        $value = $this->request->getCurrentRequest()->attributes->get($variable, '0');
+                        $options['routeParameters'][$variable] = $value;
                     }
                 }
             }
