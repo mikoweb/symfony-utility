@@ -13,8 +13,12 @@
 namespace vSymfo\Core\Manager;
 
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
+ * Common actions. It is usually usage in the controller.
+ *
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Core
  * @subpackage Manager
@@ -38,6 +42,29 @@ interface ControllerManagerInterface
     public function getEntityClass();
 
     /**
+     * Returns one entity or throw not found exception.
+     *
+     * @param Request $request
+     *
+     * @return object
+     *
+     * @throws NotFoundHttpException
+     */
+    public function findEntity(Request $request);
+
+    /**
+     * Gets paginated items.
+     *
+     * @param Request $request
+     * @param integer $limit
+     *
+     * @return mixed
+     */
+    public function getPagination(Request $request, $limit);
+
+    /**
+     * Build the form.
+     *
      * @param $data = null
      * @param array $options
      *
@@ -46,20 +73,15 @@ interface ControllerManagerInterface
     public function buildForm($data = null, array $options = []);
 
     /**
-     * @param $data = null
-     *
-     * @return Form
+     * Get class name of form.
+     * 
+     * @return string
      */
-    public function buildFormForNew($data = null);
+    public function formType();
 
     /**
-     * @param $data
+     * Save a entity.
      *
-     * @return Form
-     */
-    public function buildFormForEdit($data);
-
-    /**
      * @param mixed $entity
      *
      * @return void
@@ -67,6 +89,8 @@ interface ControllerManagerInterface
     public function save($entity);
 
     /**
+     * Remove a entity.
+     *
      * @param mixed $entity
      *
      * @return void
@@ -74,6 +98,8 @@ interface ControllerManagerInterface
     public function remove($entity);
 
     /**
+     * Check if a entity is correct.
+     *
      * @param mixed $entity
      *
      * @return boolean
