@@ -10,18 +10,23 @@
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Controller;
-
-use Symfony\Component\HttpFoundation\Request;
-use vSymfo\Core\Controller;
-use vSymfo\Core\Controller\Traits\ActionBuildableTrait;
+namespace vSymfo\Core\Crud;
 
 /**
+ * CRUD Factory.
+ *
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Core
- * @subpackage Controller
+ * @subpackage Crud
  */
-abstract class AbstractBackendController extends Controller
+interface CrudFactoryInterface
 {
-    use ActionBuildableTrait;
+    /**
+     * Returns new CRUD object for crudable object.
+     *
+     * @param CrudableInterface $object
+     *
+     * @return CrudInterface
+     */
+    public function create(CrudableInterface $object);
 }

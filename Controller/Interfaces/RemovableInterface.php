@@ -10,25 +10,22 @@
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Controller\Traits;
+namespace vSymfo\Core\Controller\Interfaces;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Core
- * @subpackage Controller_Traits
+ * @subpackage Controller
  */
-trait CommonTransTrait
+interface RemovableInterface
 {
     /**
-     * @return string
+     * @param Request $request
+     *
+     * @return Response
      */
-    abstract protected function getTransPrefix();
-
-    /**
-     * @return string|null
-     */
-    protected function getTransDomain()
-    {
-        return null;
-    }
+    public function destroyAction(Request $request);
 }

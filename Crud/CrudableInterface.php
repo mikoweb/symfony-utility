@@ -10,19 +10,28 @@
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Controller\Traits;
-
-use vSymfo\Core\Manager\ControllerManagerInterface;
+namespace vSymfo\Core\Crud;
 
 /**
+ * That will be pass to the factory to make CRUD.
+ *
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Core
- * @subpackage Controller_Traits
+ * @subpackage Crud
  */
-trait ManageableTrait
+interface CrudableInterface
 {
     /**
-     * @return ControllerManagerInterface
+     * Gets the class name of CRUD.
+     *
+     * @return string
      */
-    abstract protected function getManager();
+    public function getCrudClass();
+
+    /**
+     * Returns options for CRUD.
+     *
+     * @return array
+     */
+    public function getCrudOptions();
 }

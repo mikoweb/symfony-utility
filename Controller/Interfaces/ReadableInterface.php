@@ -10,18 +10,29 @@
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Controller;
+namespace vSymfo\Core\Controller\Interfaces;
 
 use Symfony\Component\HttpFoundation\Request;
-use vSymfo\Core\Controller;
-use vSymfo\Core\Controller\Traits\ActionBuildableTrait;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Core
  * @subpackage Controller
  */
-abstract class AbstractFrontendController extends Controller
+interface ReadableInterface
 {
-    use ActionBuildableTrait;
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function indexAction(Request $request);
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function showAction(Request $request);
 }
