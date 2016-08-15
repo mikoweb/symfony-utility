@@ -38,6 +38,13 @@ interface CrudInterface extends ContainerAwareInterface
     public function index(Request $request, array $options = []);
 
     /**
+     * Route to index.
+     *
+     * @return string
+     */
+    public function indexRoute();
+
+    /**
      * Return form for creating a entity.
      *
      * @param Request $request
@@ -48,6 +55,13 @@ interface CrudInterface extends ContainerAwareInterface
     public function create(Request $request, array $options = []);
 
     /**
+     * Route to create.
+     *
+     * @return string
+     */
+    public function createRoute();
+
+    /**
      * Create a new entity.
      *
      * @param Request $request
@@ -56,6 +70,13 @@ interface CrudInterface extends ContainerAwareInterface
      * @return DataInterface
      */
     public function store(Request $request, array $options = []);
+
+    /**
+     * Route to store.
+     *
+     * @return string
+     */
+    public function storeRoute();
 
     /**
      * Return a specific entity.
@@ -70,6 +91,13 @@ interface CrudInterface extends ContainerAwareInterface
     public function show(Request $request, array $options = []);
 
     /**
+     * Route to show.
+     *
+     * @return string
+     */
+    public function showRoute();
+
+    /**
      * Return form for editing a entity.
      *
      * @param Request $request
@@ -80,6 +108,13 @@ interface CrudInterface extends ContainerAwareInterface
      * @throws NotFoundHttpException
      */
     public function edit(Request $request, array $options = []);
+
+    /**
+     * Route to edit.
+     *
+     * @return string
+     */
+    public function editRoute();
 
     /**
      * Update a specific entity.
@@ -94,6 +129,13 @@ interface CrudInterface extends ContainerAwareInterface
     public function update(Request $request, array $options = []);
 
     /**
+     * Route to update.
+     *
+     * @return string
+     */
+    public function updateRoute();
+
+    /**
      * Delete a specific entity.
      * 
      * @param Request $request
@@ -104,6 +146,13 @@ interface CrudInterface extends ContainerAwareInterface
      * @throws NotFoundHttpException
      */
     public function destroy(Request $request, array $options = []);
+
+    /**
+     * Route to destroy.
+     *
+     * @return string
+     */
+    public function destroyRoute();
 
     /**
      * Returns object related with CRUD.
