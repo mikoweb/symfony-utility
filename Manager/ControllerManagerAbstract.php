@@ -82,10 +82,11 @@ abstract class ControllerManagerAbstract implements ControllerManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function buildForm($data = null, array $options = [])
+    public function buildForm($data = null, array $options = [], $type = null)
     {
+        $formType = is_null($type) ? $this->formType() : $type;
         $form = $this->formFactory
-            ->createBuilder($this->formType(), $data, $options)
+            ->createBuilder($formType, $data, $options)
             ->getForm()
         ;
 

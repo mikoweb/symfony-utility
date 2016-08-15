@@ -65,12 +65,13 @@ interface ControllerManagerInterface
     /**
      * Build the form.
      *
-     * @param $data = null
+     * @param mixed $data
      * @param array $options
+     * @param string|null $type
      *
      * @return Form
      */
-    public function buildForm($data = null, array $options = []);
+    public function buildForm($data = null, array $options = [], $type = null);
 
     /**
      * Get class name of form.
