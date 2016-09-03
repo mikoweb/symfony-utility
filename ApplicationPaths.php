@@ -12,14 +12,16 @@
 
 namespace vSymfo\Core;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Ścieżki do katalogów
+ * Application paths.
+ *
  * @author Rafał Mikołajun <rafal@vision-web.pl>
  * @package vSymfo Core
  */
-final class ApplicationPaths
+class ApplicationPaths implements ContainerAwareInterface
 {
     /**
      * @const string
@@ -27,91 +29,151 @@ final class ApplicationPaths
     const SLASH = DIRECTORY_SEPARATOR;
 
     /**
-     * Ścieżka do folderu z zasobami
+     * Directory to web resources.
+     *
      * @const string
      */
     const WEB_RESOURCES = "/resources";
 
     /**
-     * Ścieżka do folderu z motywam graficznymi
+     * Directory to themes.
+     *
      * @const string
      */
     const WEB_THEMES = "/theme";
 
     /**
-     * Ścieżka do folderu WebUI
+     * Web cache directory.
+     *
      * @const string
-     */
-    const WEB_WEBUI = "/resources/webui";
-
-    /**
-     * Cache zasobów webowych
      */
     const WEB_CACHE = "/cache";
 
     /**
-     * Engine WebUI
+     * Directory to WebUI.
+     *
      * @const string
      */
-    const WEB_WEBUI_ENGINE = "/resources/engine";
+    const WEBUI = "/webui";
+
+    /**
+     * Directory to WebUI Engine.
+     *
+     * @const string
+     */
+    const WEBUI_ENGINE = "/webui/engine";
+
+    /**
+     * Directory to bower components.
+     *
+     * @const string
+     */
+    const BOWER_COMPONENTS = "/bower_components";
 
     /**
      * @var ContainerInterface
      */
-    private $container;
+    protected $container;
 
     /**
-     * Ścieżka do katalogu web
+     * Path to web directory.
+     *
      * @var string
      */
-    private $webPath = null;
+    protected $webPath;
 
     /**
-     * Ścieżki absolutne
+     * Path to private directory.
+     *
+     * @var string
+     */
+    protected $privatePath;
+
+    /**
+     * Path to bower components directory.
+     *
+     * @var string
+     */
+    protected $bowerComponentsPath;
+
+    /**
+     * Absolute paths.
+     *
      * @var array
      */
-    private $absolutePath = array();
+    protected $absolutePaths;
 
     /**
-     * Ścieżki w URL
+     * URL paths.
+     *
      * @var array
      */
-    private $urlPath = array();
+    protected $urlPaths;
 
     /**
-     * @param ContainerInterface $container
      * @param string $webDir
-     * @throws \RuntimeException
+     * @param string $privateDir
      */
-    public function __construct(ContainerInterface $container, $webDir = '/../web')
+    public function __construct($webDir = '../web', $privateDir = '../private')
     {
-        $this->container = $container;
-        $this->webPath = realpath($this->container->getParameter('kernel.root_dir') . $webDir);
-
-        if ($this->webPath === false) {
-            throw new \RuntimeException('Web directory not found. Please check that you entered the correct path in variable $webDir.');
-        }
-
-        $this->absolutePath = array(
-            "kernel_root"   => $this->container->getParameter('kernel.root_dir'),
-            "kernel_cache"  => $path = $this->container->getParameter('kernel.cache_dir'),
-            "web"           => $this->webPath,
-            "web_cache"     => $this->webPath . self::WEB_CACHE,
-            "web_resources" => $this->webPath . self::WEB_RESOURCES,
-            "webui"         => $this->webPath . self::WEB_WEBUI,
-            "webui_engine"  => $this->webPath . self::WEB_WEBUI_ENGINE,
-        );
-
-        $this->urlPath = array(
-            "web_cache"     => self::WEB_CACHE,
-            "web_resources" => self::WEB_RESOURCES,
-            "webui"         => self::WEB_WEBUI,
-            "webui_engine"  => self::WEB_WEBUI_ENGINE
-        );
+        $this->webPath = $webDir;
+        $this->privatePath = $privateDir;
+        $this->absolutePaths = [];
+        $this->urlPaths = [];
     }
 
     /**
-     * Nazwa aktywnego szablonu
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+        $this->initializePaths($this->webPath, $this->privatePath);
+    }
+
+    /**
+     * Returns root directory.
+     *
+     * @return string
+     */
+    public function getRootDir()
+    {
+        return $this->container->getParameter('kernel.root_dir');
+    }
+
+    /**
+     * Returns application cache directory.
+     *
+     * @return string
+     */
+    public function getCacheDir()
+    {
+        return $this->container->getParameter('kernel.cache_dir');
+    }
+
+    /**
+     * Returns web directory.
+     *
+     * @return string
+     */
+    public function getWebDir()
+    {
+        return $this->webPath;
+    }
+
+    /**
+     * Returns private directory.
+     *
+     * @return string
+     */
+    public function getPrivateDir()
+    {
+        return $this->privatePath;
+    }
+
+    /**
+     * Gets name of active theme.
+     *
      * @return string
      */
     public function getThemeName()
@@ -120,7 +182,8 @@ final class ApplicationPaths
     }
 
     /**
-     * Ścieżka url do katalogu /web
+     * Returns path to base URL.
+     *
      * @return string
      */
     public function getBasePath()
@@ -135,39 +198,93 @@ final class ApplicationPaths
     }
 
     /**
-     * Absolutna ścieżka dostepu do katalogu
-     * @param string $name
+     * Returns path to theme URL exclude base path.
+     * 
+     * @return string
+     */
+    public function getThemePath()
+    {
+        return self::WEB_THEMES . '/' . $this->getThemeName();
+    }
+
+    /**
+     * Returns absolute path to specific directory.
+     *
+     * @param string $name Name of directory.
+     *
      * @return string
      */
     public function absolute($name)
     {
-        if (isset($this->absolutePath[$name])) {
-            return $this->absolutePath[$name];
-        } elseif ($name == "web_theme") {
-            return $this->webPath . self::WEB_THEMES . '/' . $this->getThemeName();
+        if (isset($this->absolutePaths[$name])) {
+            return $this->absolutePaths[$name];
+        } elseif ($name == 'private_theme') {
+            return $this->privatePath . $this->getThemePath();
+        } elseif ($name == 'web_theme') {
+            return $this->webPath . $this->getThemePath();
         }
 
         throw new \UnexpectedValueException("Undefined path: '$name'");
     }
 
     /**
-     * Ścieżka w adresie URL
-     * @param string $name
-     * @param bool $baseurl
+     * Returns URL to specific resource.
+     *
+     * @param string $name   Name of resource.
+     * @param bool $baseUrl  Is contains baseUrl?
+     *
      * @return string
      */
-    public function url($name, $baseurl = true)
+    public function url($name, $baseUrl = true)
     {
-        if (isset($this->urlPath[$name])) {
-            return $baseurl ? $this->getBasePath() . $this->urlPath[$name] : $this->urlPath[$name];
-        } elseif ($name == "web_theme") {
-            return $baseurl
-                ? $this->getBasePath() . self::WEB_THEMES . '/' . $this->getThemeName()
-                : self::WEB_THEMES . '/' . $this->getThemeName();
-        } elseif ($name == "base" || $name == "web") {
+        if (isset($this->urlPaths[$name])) {
+            return $baseUrl ? $this->getBasePath() . $this->urlPaths[$name] : $this->urlPaths[$name];
+        } elseif ($name == 'web_theme') {
+            return $baseUrl ? $this->getBasePath() . $this->getThemePath() : $this->getThemePath();
+        } elseif ($name == 'base' || $name == 'web') {
             return $this->getBasePath();
         }
 
         throw new \UnexpectedValueException("Undefined path: '$name'");
+    }
+
+    /**
+     * @param string $webDir
+     * @param string $privateDir
+     */
+    protected function initializePaths($webDir, $privateDir)
+    {
+        $this->webPath = realpath($this->getRootDir() . '/' . $webDir);
+        $this->privatePath = realpath($this->getRootDir() . '/' . $privateDir);
+        $this->bowerComponentsPath = realpath($this->getRootDir() . '/..' . self::BOWER_COMPONENTS);
+
+        if ($this->webPath === false) {
+            throw new \RuntimeException('Web directory not found');
+        }
+
+        if ($this->privatePath === false) {
+            throw new \RuntimeException('Private directory not found.');
+        }
+
+        if ($this->bowerComponentsPath === false) {
+            throw new \RuntimeException('Bower components directory not found.');
+        }
+
+        $this->absolutePaths = [
+            'kernel_root'       => $this->getRootDir(),
+            'kernel_cache'      => $path = $this->getCacheDir(),
+            'web'               => $this->webPath,
+            'web_cache'         => $this->webPath . self::WEB_CACHE,
+            'web_resources'     => $this->webPath . self::WEB_RESOURCES,
+            'private'           => $this->privatePath,
+            'webui'             => $this->privatePath . self::WEBUI,
+            'webui_engine'      => $this->privatePath . self::WEBUI_ENGINE,
+            'bower_components'  => $this->bowerComponentsPath
+        ];
+
+        $this->urlPaths = [
+            'web_cache'     => self::WEB_CACHE,
+            'web_resources' => self::WEB_RESOURCES
+        ];
     }
 }
