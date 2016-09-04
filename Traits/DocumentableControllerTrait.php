@@ -15,6 +15,8 @@ namespace vSymfo\Core\Traits;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use vSymfo\Component\Document\Format\DocumentAbstract;
+use vSymfo\Component\Document\Format\HtmlDocument;
+use vSymfo\Component\Document\Resources\Interfaces\CombineResourceInterface;
 
 /**
  * Kontroler posiadający renderowanie dokumentu
@@ -39,8 +41,13 @@ trait DocumentableControllerTrait
      */
     public function renderDocumentResponse(Response $response)
     {
-        $this->container->get('document')->body($response->getContent());
-        $response->setContent($this->container->get('document')->render());
+        $document = $this->getDocument();
+        $document->body($response->getContent());
+        $response->setContent($document->render());
+
+        if ($this->container->get( 'kernel' )->getEnvironment() === 'dev') {
+            $this->throwResourcesCombineExceptions($document);
+        }
 
         return $response;
     }
@@ -59,5 +66,26 @@ trait DocumentableControllerTrait
         $response = $this->render($view, $parameters, $response);
 
         return $this->renderDocumentResponse($response);
+    }
+
+    /**
+     * @param DocumentAbstract $document
+     *
+     * @throws \Exception
+     */
+    private function throwResourcesCombineExceptions(DocumentAbstract $document)
+    {
+        if ($document instanceof HtmlDocument) {
+            $resources = array_merge($document->resources('javascript')->resources(),
+                $document->resources('stylesheet')->resources());
+
+            foreach ($resources as $resource) {
+                if ($resource instanceof CombineResourceInterface
+                    && $resource->getCombineObject()->getException() instanceof \Exception
+                ) {
+                    throw $resource->getCombineObject()->getException();
+                }
+            }
+        }
     }
 }

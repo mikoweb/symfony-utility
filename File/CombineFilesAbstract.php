@@ -88,6 +88,11 @@ abstract class CombineFilesAbstract implements CombineFilesInterface
     protected $outputForceRefresh = false;
 
     /**
+     * @var \Exception
+     */
+    protected $exception;
+
+    /**
      * @param array $sources
      */
     public function __construct(array $sources = array())
@@ -415,6 +420,22 @@ abstract class CombineFilesAbstract implements CombineFilesInterface
             // zapisywanie wygenerowanej zawartości
             file_put_contents($output, $this->processFiles($content));
         }
+    }
+
+    /**
+     * @return \Exception
+     */
+    public function getException()
+    {
+        return $this->exception;
+    }
+
+    /**
+     * @param \Exception $exception
+     */
+    public function setException(\Exception $exception)
+    {
+        $this->exception = $exception;
     }
 
     /**

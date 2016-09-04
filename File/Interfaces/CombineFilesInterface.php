@@ -115,4 +115,14 @@ interface CombineFilesInterface
      * @return $this
      */
     public function setCacheDb(CombineFilesCacheDB $cacheDb);
+
+    /**
+     * @return \Exception
+     */
+    public function getException();
+
+    /**
+     * @param \Exception $exception
+     */
+    public function setException(\Exception $exception);
 }
