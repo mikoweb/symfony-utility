@@ -31,7 +31,7 @@ abstract class AbstractFixture extends BaseFixture implements ContainerAwareInte
     /**
      * @var string
      */
-    private $fixturesDirectory;
+    protected $fixturesDirectory;
 
     /**
      * {@inheritdoc}
