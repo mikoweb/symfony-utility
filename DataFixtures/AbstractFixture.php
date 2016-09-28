@@ -71,4 +71,41 @@ abstract class AbstractFixture extends BaseFixture implements ContainerAwareInte
 
         return $xpath;
     }
+
+    /**
+     * @param string $class
+     * @param string $subclass
+     * @return bool
+     */
+    protected function isSubclassOf($class, $subclass)
+    {
+        $reflection = new \ReflectionClass($class);
+        return $reflection->isSubclassOf($subclass);
+    }
+
+    /**
+     * @param string $class
+     * @param string $subclass
+     */
+    protected function throwIsNotSubclass($class, $subclass)
+    {
+        if (!$this->isSubclassOf($class, $subclass)) {
+            throw new \UnexpectedValueException($class . ' is not subclass of ' . $subclass);
+        }
+    }
+
+    /**
+     * @param string $class
+     * @param string|null $checkIsSubclass
+     *
+     * @return object
+     */
+    protected function createEntity($class, $checkIsSubclass = null)
+    {
+        if (is_string($checkIsSubclass)) {
+            $this->throwIsNotSubclass($class, $checkIsSubclass);
+        }
+
+        return new $class();
+    }
 }

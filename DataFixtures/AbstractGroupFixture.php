@@ -25,28 +25,56 @@ abstract class AbstractGroupFixture extends AbstractFixture
 {
     /**
      * @param string $filename
+     * @param ObjectManager $manager
      */
-    public function loadGroupRolesFromXml($filename)
+    public function loadGroupRolesFromXml($filename, ObjectManager $manager)
     {
+        $this->throwIsNotSubclass($this->getRoleClass(), RoleAbstract::class);
+        $allRoles = $manager->getRepository($this->getRoleClass())->findAll();
+
+        foreach ($allRoles as $role) {
+            $this->setReference('Role.' . $role->getRole(), $role);
+        }
+
         $xpath = $this->openXmlFile($filename);
 
         foreach ($xpath->query('/groups/group') as $group) {
-            $roles = [];
+            $reference = $group->getAttribute('reference');
 
-            foreach ($group->getElementsByTagName('role') as $role) {
-                if (!empty($role->nodeValue)) {
-                    $roles[] = $role->nodeValue;
+            if ($group->hasAttribute('allroles')) {
+                $this->addRoles($reference, $allRoles);
+            } else {
+                $roles = [];
+
+                foreach ($group->getElementsByTagName('role') as $role) {
+                    if (!empty($role->nodeValue)) {
+                        $roles[] = $role->nodeValue;
+                    }
                 }
+
+                $this->addRoles($reference, $roles);
             }
 
-            $this->addRoles($group->getAttribute('reference'), $roles);
         }
     }
 
     /**
+     * @return string
+     */
+    abstract public function getGroupClass();
+
+    /**
+     * @return string
+     */
+    abstract public function getRoleClass();
+
+    /**
      * @return GroupAbstract
      */
-    abstract public function createGroupEntity();
+    public function createGroupEntity()
+    {
+        return $this->createEntity($this->getGroupClass(), GroupAbstract::class);
+    }
 
     /**
      * @param string $reference
@@ -64,7 +92,10 @@ abstract class AbstractGroupFixture extends AbstractFixture
         foreach ($roles as $role) {
             /** @var RoleAbstract $roleEntity */
             $roleEntity = $this->getReference('Role.' . $role);
-            $group->addRole($roleEntity);
+
+            if (!$group->hasRole($roleEntity)) {
+                $group->addRole($roleEntity);
+            }
         }
     }
 
@@ -78,6 +109,16 @@ abstract class AbstractGroupFixture extends AbstractFixture
      */
     public function createGroup(ObjectManager $manager, $name, $groupRole, $irremovable = true)
     {
+        $this->throwIsNotSubclass($this->getGroupClass(), GroupAbstract::class);
+
+        if ($result = $manager->getRepository($this->getGroupClass())->findOneBy([
+            'name' => $name
+        ])) {
+            $manager->persist($result);
+
+            return $result;
+        }
+
         $group = $this->createGroupEntity();
         $group->setName($name);
         $group->setGroupRole($groupRole);
