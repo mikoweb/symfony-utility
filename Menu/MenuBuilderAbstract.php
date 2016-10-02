@@ -221,7 +221,7 @@ abstract class MenuBuilderAbstract
                 foreach ($variables as $variable) {
                     if (!isset($options['routeParameters'][$variable]) && !isset($defaults[$variable])) {
                         $value = $this->request->getCurrentRequest()->attributes->get($variable, '0');
-                        $options['routeParameters'][$variable] = $value;
+                        $options['routeParameters'][$variable] = empty($value) ? '0' : $value;
                     }
                 }
             }
