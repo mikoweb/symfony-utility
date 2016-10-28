@@ -163,7 +163,9 @@ class SortingManager
      */
     public function getDirection(Request $request)
     {
-        $direction = $request->get($this->getFieldDirection());
+        $direction = $request->query->has($this->getFieldDirection())
+            ? $request->query->get($this->getFieldDirection())
+            : $request->get($this->getFieldDirection());
 
         if (is_null($direction)) {
             return null;
@@ -179,7 +181,9 @@ class SortingManager
      */
     public function getSort(Request $request)
     {
-        return $request->get($this->getFieldSort());
+        return $request->query->has($this->getFieldSort())
+            ? $request->query->get($this->getFieldSort())
+            : $request->get($this->getFieldSort());
     }
 
     /**
