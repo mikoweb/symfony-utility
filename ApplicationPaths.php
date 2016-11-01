@@ -64,11 +64,11 @@ class ApplicationPaths implements ContainerAwareInterface
     const WEBUI_ENGINE = "/webui/engine";
 
     /**
-     * Directory to bower components.
+     * Directory to node modules.
      *
      * @const string
      */
-    const BOWER_COMPONENTS = "/bower_components";
+    const NODE_MODULES = "/node_modules";
 
     /**
      * @var ContainerInterface
@@ -90,11 +90,11 @@ class ApplicationPaths implements ContainerAwareInterface
     protected $privatePath;
 
     /**
-     * Path to bower components directory.
+     * Path to node modules directory.
      *
      * @var string
      */
-    protected $bowerComponentsPath;
+    protected $nodeModulesPath;
 
     /**
      * Absolute paths.
@@ -256,7 +256,7 @@ class ApplicationPaths implements ContainerAwareInterface
     {
         $this->webPath = realpath($this->getRootDir() . '/' . $webDir);
         $this->privatePath = realpath($this->getRootDir() . '/' . $privateDir);
-        $this->bowerComponentsPath = realpath($this->getRootDir() . '/..' . self::BOWER_COMPONENTS);
+        $this->nodeModulesPath = realpath($this->getRootDir() . '/..' . self::NODE_MODULES);
 
         if ($this->webPath === false) {
             throw new \RuntimeException('Web directory not found');
@@ -266,8 +266,8 @@ class ApplicationPaths implements ContainerAwareInterface
             throw new \RuntimeException('Private directory not found.');
         }
 
-        if ($this->bowerComponentsPath === false) {
-            throw new \RuntimeException('Bower components directory not found.');
+        if ($this->nodeModulesPath === false) {
+            throw new \RuntimeException('Node modules directory not found.');
         }
 
         $this->absolutePaths = [
@@ -279,7 +279,7 @@ class ApplicationPaths implements ContainerAwareInterface
             'private'           => $this->privatePath,
             'webui'             => $this->privatePath . self::WEBUI,
             'webui_engine'      => $this->privatePath . self::WEBUI_ENGINE,
-            'bower_components'  => $this->bowerComponentsPath
+            'node_modules'      => $this->nodeModulesPath
         ];
 
         $this->urlPaths = [
