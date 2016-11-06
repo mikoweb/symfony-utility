@@ -69,12 +69,26 @@ class FormCollection extends AbstractLazyCollection
      *
      * @param mixed $data         The initial data for the form.
      * @param array|null $options Options for the form.
+     *
+     * @return Form|false
      */
     public function addForm($data = null, array $options = null)
     {
-        $this->add($this->formFactory
+        $form = $this->formFactory
             ->createBuilder($this->formType, $data, is_array($options) ? $options : $this->defaultFormOptions)
-            ->getForm());
+            ->getForm();
+
+        return $this->add($form) ? $form : false;
+    }
+
+    /**
+     * Remove last element.
+     *
+     * @return boolean
+     */
+    public function removeLast()
+    {
+        return $this->removeElement($this->last());
     }
 
     /**
