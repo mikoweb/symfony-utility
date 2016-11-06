@@ -48,7 +48,7 @@ abstract class ControllerManagerAbstract implements ControllerManagerInterface
      * @param EntityFactoryInterface $entityFactory
      */
     public function __construct(
-        EntityManager $manager, 
+        EntityManager $manager,
         FormFactory $formFactory,
         EntityFactoryInterface $entityFactory
     ) {
@@ -68,9 +68,10 @@ abstract class ControllerManagerAbstract implements ControllerManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function findEntity(Request $request)
+    public function findEntity(Request $request, $queryKey = null)
     {
-        $entity = $this->manager->getRepository($this->getEntityClass())->find($request->attributes->get('id'));
+        $entity = $this->manager->getRepository($this->getEntityClass())->find(
+            is_string($queryKey) ? $request->query->get($queryKey) : $request->attributes->get('id'));
 
         if (is_null($entity)) {
             throw new NotFoundHttpException('Entity not found.');

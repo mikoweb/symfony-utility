@@ -45,12 +45,13 @@ interface ControllerManagerInterface
      * Returns one entity or throw not found exception.
      *
      * @param Request $request
+     * @param string|null $queryKey
      *
      * @return object
      *
      * @throws NotFoundHttpException
      */
-    public function findEntity(Request $request);
+    public function findEntity(Request $request, $queryKey = null);
 
     /**
      * Gets paginated items.
@@ -75,7 +76,7 @@ interface ControllerManagerInterface
 
     /**
      * Get class name of form.
-     * 
+     *
      * @return string
      */
     public function formType();
