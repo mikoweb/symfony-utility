@@ -74,9 +74,7 @@ class FormCollection extends AbstractLazyCollection
      */
     public function addForm($data = null, array $options = null)
     {
-        $form = $this->formFactory
-            ->createBuilder($this->formType, $data, is_array($options) ? $options : $this->defaultFormOptions)
-            ->getForm();
+        $form = $this->createForm($data, $options);
 
         return $this->add($form) ? $form : false;
     }
@@ -101,8 +99,11 @@ class FormCollection extends AbstractLazyCollection
     public function toViews(FormView $parent = null)
     {
         $views = new ArrayCollection();
-        foreach ($this->collection as $form) {
-            $views->add($form->createView($parent));
+        foreach ($this->collection as $k => $form) {
+            $view = $form->createView($parent);
+            $this->transformIds($view, (string) $k);
+            $this->transformName($view, (string) $k);
+            $views->add($view);
         }
 
         return $views;
@@ -127,11 +128,68 @@ class FormCollection extends AbstractLazyCollection
     }
 
     /**
+     * Return prototype item for dynamic forms.
+     *
+     * @return FormView
+     */
+    public function createPrototypeItem()
+    {
+        $view = $this->createForm()->createView();
+        $this->transformName($view, '__name__');
+        $this->transformIds($view, '__name__');
+
+        return $view;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function doInitialize()
     {
         $this->collection = new ArrayCollection();
+    }
+
+    /**
+     * @param FormView $view
+     * @param string|null $suffix
+     */
+    protected function transformIds(FormView $view, $suffix)
+    {
+        if (isset($view->vars['id'])) {
+            $view->vars['id'] .= '_' . $suffix;
+        }
+
+        foreach ($view->children as $child) {
+            $this->transformIds($child, $suffix);
+        }
+    }
+
+    /**
+     * @param FormView $view
+     * @param string|null $suffix
+     */
+    protected function transformName(FormView $view, $suffix)
+    {
+        if (isset($view->vars['name'])) {
+            $view->vars['name'] .= '_' . $suffix;
+        }
+
+        if (isset($view->vars['full_name'])) {
+            $view->vars['full_name'] .= '_' . $suffix;
+        }
+    }
+
+    /**
+     * @param mixed $data
+     * @param array|null $options
+     *
+     * @return Form
+     */
+    protected function createForm($data = null, array $options = null)
+    {
+        return $this->formFactory
+            ->createBuilder($this->formType, $data, is_array($options) ? $options : $this->defaultFormOptions)
+            ->getForm();
     }
 
     /**
