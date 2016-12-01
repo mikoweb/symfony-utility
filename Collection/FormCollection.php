@@ -98,6 +98,7 @@ class FormCollection extends AbstractLazyCollection
      */
     public function toViews(FormView $parent = null)
     {
+        $this->initialize();
         $views = new ArrayCollection();
         foreach ($this->collection as $k => $form) {
             $view = $form->createView($parent);
