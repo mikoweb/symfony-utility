@@ -262,14 +262,6 @@ class ApplicationPaths implements ContainerAwareInterface
             throw new \RuntimeException('Web directory not found');
         }
 
-        if ($this->privatePath === false) {
-            throw new \RuntimeException('Private directory not found.');
-        }
-
-        if ($this->nodeModulesPath === false) {
-            throw new \RuntimeException('Node modules directory not found.');
-        }
-
         $this->absolutePaths = [
             'kernel_root'       => $this->getRootDir(),
             'kernel_cache'      => $path = $this->getCacheDir(),
