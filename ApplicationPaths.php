@@ -255,8 +255,8 @@ class ApplicationPaths implements ContainerAwareInterface
     protected function initializePaths($webDir, $privateDir)
     {
         $this->webPath = realpath($this->getRootDir() . '/' . $webDir);
-        $this->privatePath = realpath($this->getRootDir() . '/' . $privateDir);
-        $this->nodeModulesPath = realpath($this->getRootDir() . '/..' . self::NODE_MODULES);
+        $this->privatePath = (string) realpath($this->getRootDir() . '/' . $privateDir);
+        $this->nodeModulesPath = (string) realpath($this->getRootDir() . '/..' . self::NODE_MODULES);
 
         if ($this->webPath === false) {
             throw new \RuntimeException('Web directory not found');
