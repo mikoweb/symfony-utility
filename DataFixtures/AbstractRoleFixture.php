@@ -1,25 +1,17 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\DataFixtures;
+namespace Mikoweb\SymfonyUtility\DataFixtures;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use vSymfo\Core\Entity\RoleAbstract;
+use Mikoweb\SymfonyUtility\Entity\RoleAbstract;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage DataFixtures
- */
 abstract class AbstractRoleFixture extends AbstractFixture
 {
     /**
@@ -30,8 +22,10 @@ abstract class AbstractRoleFixture extends AbstractFixture
     /**
      * @param ObjectManager $manager
      * @param string $filename
+     *
+     * @throws \Exception
      */
-    public function loadRolesFromXml(ObjectManager $manager, $filename)
+    public function loadRolesFromXml(ObjectManager $manager, string $filename): void
     {
         $xpath = $this->openXmlFile($filename);
 
@@ -56,12 +50,14 @@ abstract class AbstractRoleFixture extends AbstractFixture
     /**
      * @return string
      */
-    abstract public function getRoleClass();
+    abstract public function getRoleClass(): string;
 
     /**
      * @return RoleAbstract
+     *
+     * @throws \ReflectionException
      */
-    public function createRoleEntity()
+    public function createRoleEntity(): RoleAbstract
     {
         return $this->createEntity($this->getRoleClass(), RoleAbstract::class);
     }
@@ -73,8 +69,10 @@ abstract class AbstractRoleFixture extends AbstractFixture
      * @param string $tag
      *
      * @return RoleAbstract
+     *
+     * @throws \ReflectionException
      */
-    public function createRole(ObjectManager $manager, $role, $name, $tag)
+    public function createRole(ObjectManager $manager, string $role, string $name, string $tag): RoleAbstract
     {
         $this->throwIsNotSubclass($this->getRoleClass(), RoleAbstract::class);
 
@@ -106,7 +104,7 @@ abstract class AbstractRoleFixture extends AbstractFixture
     /**
      * @return boolean
      */
-    public function isThrowIfExist()
+    public function isThrowIfExist(): bool
     {
         return $this->throwIfExist === null || $this->throwIfExist === true;
     }
@@ -114,7 +112,7 @@ abstract class AbstractRoleFixture extends AbstractFixture
     /**
      * @param boolean $throwIfExist
      */
-    public function setThrowIfExist($throwIfExist)
+    public function setThrowIfExist(bool $throwIfExist): void
     {
         $this->throwIfExist = $throwIfExist;
     }

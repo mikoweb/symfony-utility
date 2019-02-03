@@ -1,33 +1,27 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\DataFixtures;
+namespace Mikoweb\SymfonyUtility\DataFixtures;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use vSymfo\Core\Entity\GroupAbstract;
-use vSymfo\Core\Entity\RoleAbstract;
+use Mikoweb\SymfonyUtility\Entity\GroupAbstract;
+use Mikoweb\SymfonyUtility\Entity\RoleAbstract;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage DataFixtures
- */
 abstract class AbstractGroupFixture extends AbstractFixture
 {
     /**
      * @param string $filename
      * @param ObjectManager $manager
+     *
+     * @throws \Exception
      */
-    public function loadGroupRolesFromXml($filename, ObjectManager $manager)
+    public function loadGroupRolesFromXml(string $filename, ObjectManager $manager): void
     {
         $this->throwIsNotSubclass($this->getRoleClass(), RoleAbstract::class);
         $allRoles = $manager->getRepository($this->getRoleClass())->findAll();
@@ -54,24 +48,25 @@ abstract class AbstractGroupFixture extends AbstractFixture
 
                 $this->addRoles($reference, $roles);
             }
-
         }
     }
 
     /**
      * @return string
      */
-    abstract public function getGroupClass();
+    abstract public function getGroupClass(): string;
 
     /**
      * @return string
      */
-    abstract public function getRoleClass();
+    abstract public function getRoleClass(): string;
 
     /**
      * @return GroupAbstract
+     *
+     * @throws \ReflectionException
      */
-    public function createGroupEntity()
+    public function createGroupEntity(): GroupAbstract
     {
         return $this->createEntity($this->getGroupClass(), GroupAbstract::class);
     }
@@ -80,7 +75,7 @@ abstract class AbstractGroupFixture extends AbstractFixture
      * @param string $reference
      * @param array $roles
      */
-    public function addRoles($reference, array $roles)
+    public function addRoles(string $reference, array $roles): void
     {
         /** @var GroupAbstract $group */
         $group = $this->getReference($reference);
@@ -106,8 +101,10 @@ abstract class AbstractGroupFixture extends AbstractFixture
      * @param bool $irremovable
      *
      * @return GroupAbstract
+     *
+     * @throws \ReflectionException
      */
-    public function createGroup(ObjectManager $manager, $name, $groupRole, $irremovable = true)
+    public function createGroup(ObjectManager $manager, string $name, string $groupRole, bool $irremovable = true): GroupAbstract
     {
         $this->throwIsNotSubclass($this->getGroupClass(), GroupAbstract::class);
 

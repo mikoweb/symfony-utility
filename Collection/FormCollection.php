@@ -1,16 +1,13 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Collection;
+namespace Mikoweb\SymfonyUtility\Collection;
 
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,11 +16,6 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormView;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Collection
- */
 class FormCollection extends AbstractLazyCollection
 {
     /**
@@ -49,10 +41,11 @@ class FormCollection extends AbstractLazyCollection
      */
     public function __construct(
         FormFactory $formFactory,
-        $formType,
-        Collection $dataItems = null,
+        string $formType,
+        ?Collection $dataItems = null,
         array $defaultFormOptions = []
-    ) {
+    )
+    {
         $this->formFactory = $formFactory;
         $this->formType = $formType;
         $this->defaultFormOptions = $defaultFormOptions;
@@ -84,7 +77,7 @@ class FormCollection extends AbstractLazyCollection
      *
      * @return boolean
      */
-    public function removeLast()
+    public function removeLast(): bool
     {
         return $this->removeElement($this->last());
     }
@@ -96,7 +89,7 @@ class FormCollection extends AbstractLazyCollection
      *
      * @return FormView[]|Collection Views.
      */
-    public function toViews(FormView $parent = null)
+    public function toViews(FormView $parent = null): Collection
     {
         $this->initialize();
         $views = new ArrayCollection();
@@ -133,7 +126,7 @@ class FormCollection extends AbstractLazyCollection
      *
      * @return FormView
      */
-    public function createPrototypeItem()
+    public function createPrototypeItem(): FormView
     {
         $view = $this->createForm()->createView();
         $this->transformName($view, '__name__');
@@ -154,7 +147,7 @@ class FormCollection extends AbstractLazyCollection
      * @param FormView $view
      * @param string|null $suffix
      */
-    protected function transformIds(FormView $view, $suffix)
+    protected function transformIds(FormView $view, ?string $suffix): void
     {
         if (isset($view->vars['id'])) {
             $view->vars['id'] .= '_' . $suffix;
@@ -169,7 +162,7 @@ class FormCollection extends AbstractLazyCollection
      * @param FormView $view
      * @param string|null $suffix
      */
-    protected function transformName(FormView $view, $suffix)
+    protected function transformName(FormView $view, ?string $suffix): void
     {
         if (isset($view->vars['name'])) {
             $view->vars['name'] .= '_' . $suffix;
@@ -186,7 +179,7 @@ class FormCollection extends AbstractLazyCollection
      *
      * @return Form
      */
-    protected function createForm($data = null, array $options = null)
+    protected function createForm($data = null, array $options = null): Form
     {
         return $this->formFactory
             ->createBuilder($this->formType, $data, is_array($options) ? $options : $this->defaultFormOptions)

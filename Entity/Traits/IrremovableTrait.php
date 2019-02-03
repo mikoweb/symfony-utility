@@ -1,25 +1,17 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Entity\Traits;
+namespace Mikoweb\SymfonyUtility\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\ORMException;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Entity
- */
 trait IrremovableTrait
 {
     /**
@@ -32,7 +24,7 @@ trait IrremovableTrait
     /**
      * @return boolean
      */
-    public function isIrremovable()
+    public function isIrremovable(): bool
     {
         return $this->irremovable;
     }
@@ -42,7 +34,7 @@ trait IrremovableTrait
      *
      * @return $this
      */
-    public function setIrremovable($irremovable)
+    public function setIrremovable(bool $irremovable)
     {
         $this->irremovable = $irremovable;
 
@@ -53,7 +45,7 @@ trait IrremovableTrait
      * @ORM\PreRemove
      * @throws ORMException
      */
-    public function onPreRemove()
+    public function onPreRemove(): void
     {
         if ($this->isIrremovable()) {
             throw new ORMException('You can not delete irremovable entity.');

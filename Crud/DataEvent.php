@@ -1,24 +1,16 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Crud;
+namespace Mikoweb\SymfonyUtility\Crud;
 
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Crud
- */
 class DataEvent extends Event
 {
     /**
@@ -57,7 +49,7 @@ class DataEvent extends Event
     /**
      * @return DataInterface
      */
-    public function getData()
+    public function getData(): DataInterface
     {
         return $this->data;
     }

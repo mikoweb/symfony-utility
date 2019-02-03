@@ -1,29 +1,19 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core;
+namespace Mikoweb\SymfonyUtility\Controller\Traits;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
 use Symfony\Component\HttpFoundation\Response;
 use vSymfo\Core\Traits\DocumentableControllerTrait;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- */
-class Controller extends SymfonyController
+trait PrefixableViewsTrait
 {
-    use DocumentableControllerTrait;
-
     /**
      * {@inheritdoc}
      */
@@ -35,7 +25,7 @@ class Controller extends SymfonyController
     /**
      * @return string
      */
-    protected function getViewPrefix()
+    protected function getViewPrefix(): string
     {
         return '';
     }

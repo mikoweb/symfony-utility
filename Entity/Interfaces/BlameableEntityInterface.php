@@ -1,30 +1,22 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Entity\Interfaces;
+namespace Mikoweb\SymfonyUtility\Entity\Interfaces;
 
 use FOS\UserBundle\Model\UserInterface;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Entity
- */
 interface BlameableEntityInterface
 {
     /**
-     * @return User
+     * @return UserInterface
      */
-    public function getCreatedBy();
+    public function getCreatedBy(): UserInterface;
 
     /**
      * @param UserInterface $createdBy
@@ -32,9 +24,9 @@ interface BlameableEntityInterface
     public function setCreatedBy(UserInterface $createdBy);
 
     /**
-     * @return User
+     * @return UserInterface
      */
-    public function getUpdatedBy();
+    public function getUpdatedBy(): UserInterface;
 
     /**
      * @param UserInterface $updatedBy

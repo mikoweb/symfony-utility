@@ -1,22 +1,14 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Entity;
+namespace Mikoweb\SymfonyUtility\Entity;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Entity
- */
 interface EntityFactoryInterface
 {
     /**
@@ -27,7 +19,7 @@ interface EntityFactoryInterface
      *
      * @return object The entity object.
      */
-    public function entity($className, array $args = []);
+    public function entity(string $className, array $args = []);
 
     /**
      * Set up the required objects.

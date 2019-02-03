@@ -1,22 +1,14 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Entity\Provider;
+namespace Mikoweb\SymfonyUtility\Entity\Provider;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Entity_Provider
- */
 interface ImagesProviderInterface
 {
     const DEFAULT_PATH = '/default_image.png';
@@ -29,7 +21,7 @@ interface ImagesProviderInterface
      *
      * @return string The public asset path.
      */
-    public function asset($obj, $fieldName);
+    public function asset($obj, string $fieldName): string;
 
     /**
      * Gets the same thing asset() or default path.
@@ -39,7 +31,7 @@ interface ImagesProviderInterface
      *
      * @return string The public asset path or default path.
      */
-    public function assetOrDefault($obj, $fieldName);
+    public function assetOrDefault($obj, string $fieldName): string;
 
     /**
      * Gets the html tags for the image associated with the object.
@@ -51,7 +43,7 @@ interface ImagesProviderInterface
      *
      * @return string The html tags.
      */
-    public function render($obj, $fieldName, $format, $layout = null);
+    public function render($obj, string $fieldName, string $format, ?string $layout = null): string;
 
     /**
      * Returns the public path.
@@ -63,14 +55,14 @@ interface ImagesProviderInterface
      *
      * @return string A public path which takes into account the base path and URL path
      */
-    public function getUrl($path, $packageName = null);
+    public function getUrl(string $path, ?string $packageName = null): string;
 
     /**
      * Gets default path.
      *
      * @return string
      */
-    public function getDefaultPath();
+    public function getDefaultPath(): string;
 
     /**
      * Gets filtered path for rendering in the browser.
@@ -83,5 +75,5 @@ interface ImagesProviderInterface
      *
      * @return string
      */
-    public function imageFilter($path, $filter, array $runtimeConfig = [], $resolver = null);
+    public function imageFilter(string $path, string $filter, array $runtimeConfig = [], ?string $resolver = null): string;
 }

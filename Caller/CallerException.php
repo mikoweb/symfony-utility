@@ -1,24 +1,16 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Caller;
+namespace Mikoweb\SymfonyUtility\Caller;
 
 use Exception;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Caller
- */
 class CallerException extends Exception
 {
     /**
@@ -50,7 +42,7 @@ class CallerException extends Exception
     /**
      * @return array
      */
-    public function getCallData()
+    public function getCallData(): array
     {
         return $this->callData;
     }
@@ -58,7 +50,7 @@ class CallerException extends Exception
     /**
      * @param array $callData
      */
-    public function setCallData($callData)
+    public function setCallData(array $callData)
     {
         $this->callData = $callData;
     }

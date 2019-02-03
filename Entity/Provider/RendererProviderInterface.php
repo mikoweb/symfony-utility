@@ -1,22 +1,14 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Entity\Provider;
+namespace Mikoweb\SymfonyUtility\Entity\Provider;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Entity_Provider
- */
 interface RendererProviderInterface
 {
     /**
@@ -27,5 +19,5 @@ interface RendererProviderInterface
      *
      * @return string The rendered template
      */
-    public function render($name, array $context = []);
+    public function render(string $name, array $context = []): string;
 }

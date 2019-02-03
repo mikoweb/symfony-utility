@@ -1,22 +1,14 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Caller;
+namespace Mikoweb\SymfonyUtility\Caller;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Caller
- */
 interface CallerInterface
 {
     /**
@@ -30,7 +22,7 @@ interface CallerInterface
      *
      * @throws CallerException
      */
-    public function call($obj, $name, array $arguments);
+    public function call($obj, string $name, array $arguments): void;
 
     /**
      * Returns the prefix of supported method names.
@@ -38,5 +30,5 @@ interface CallerInterface
      *
      * @return string
      */
-    public function callPrefix();
+    public function callPrefix(): string;
 }

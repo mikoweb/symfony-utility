@@ -1,16 +1,13 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Crud;
+namespace Mikoweb\SymfonyUtility\Crud;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +15,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * CRUD (create, read, update and delete) interface.
- *
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Crud
  */
 interface CrudInterface extends ContainerAwareInterface
 {
@@ -35,14 +28,14 @@ interface CrudInterface extends ContainerAwareInterface
      *
      * @throws NotFoundHttpException
      */
-    public function index(Request $request, array $options = []);
+    public function index(Request $request, array $options = []): DataInterface;
 
     /**
      * Route to index.
      *
      * @return string
      */
-    public function indexRoute();
+    public function indexRoute(): string;
 
     /**
      * Return form for creating a entity.
@@ -52,14 +45,14 @@ interface CrudInterface extends ContainerAwareInterface
      *
      * @return DataInterface
      */
-    public function create(Request $request, array $options = []);
+    public function create(Request $request, array $options = []): DataInterface;
 
     /**
      * Route to create.
      *
      * @return string
      */
-    public function createRoute();
+    public function createRoute(): string;
 
     /**
      * Create a new entity.
@@ -69,14 +62,14 @@ interface CrudInterface extends ContainerAwareInterface
      *
      * @return DataInterface
      */
-    public function store(Request $request, array $options = []);
+    public function store(Request $request, array $options = []): DataInterface;
 
     /**
      * Route to store.
      *
      * @return string
      */
-    public function storeRoute();
+    public function storeRoute(): string;
 
     /**
      * Return a specific entity.
@@ -88,14 +81,14 @@ interface CrudInterface extends ContainerAwareInterface
      *
      * @throws NotFoundHttpException
      */
-    public function show(Request $request, array $options = []);
+    public function show(Request $request, array $options = []): DataInterface;
 
     /**
      * Route to show.
      *
      * @return string
      */
-    public function showRoute();
+    public function showRoute(): string;
 
     /**
      * Return form for editing a entity.
@@ -107,14 +100,14 @@ interface CrudInterface extends ContainerAwareInterface
      *
      * @throws NotFoundHttpException
      */
-    public function edit(Request $request, array $options = []);
+    public function edit(Request $request, array $options = []): DataInterface;
 
     /**
      * Route to edit.
      *
      * @return string
      */
-    public function editRoute();
+    public function editRoute(): string;
 
     /**
      * Update a specific entity.
@@ -126,14 +119,14 @@ interface CrudInterface extends ContainerAwareInterface
      *
      * @throws NotFoundHttpException
      */
-    public function update(Request $request, array $options = []);
+    public function update(Request $request, array $options = []): DataInterface;
 
     /**
      * Route to update.
      *
      * @return string
      */
-    public function updateRoute();
+    public function updateRoute(): string;
 
     /**
      * Delete a specific entity.
@@ -145,26 +138,26 @@ interface CrudInterface extends ContainerAwareInterface
      *
      * @throws NotFoundHttpException
      */
-    public function destroy(Request $request, array $options = []);
+    public function destroy(Request $request, array $options = []): DataInterface;
 
     /**
      * Route to destroy.
      *
      * @return string
      */
-    public function destroyRoute();
+    public function destroyRoute(): string;
 
     /**
      * Returns object related with CRUD.
      *
      * @return CrudableInterface
      */
-    public function getRelated();
+    public function getRelated(): CrudableInterface;
 
     /**
      * Set object related with CRUD.
      *
      * @param CrudableInterface $related
      */
-    public function setRelated(CrudableInterface $related);
+    public function setRelated(CrudableInterface $related): void;
 }

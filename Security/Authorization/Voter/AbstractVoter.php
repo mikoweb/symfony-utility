@@ -1,29 +1,21 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Security\Authorization\Voter;
+namespace Mikoweb\SymfonyUtility\Security\Authorization\Voter;
 
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use vSymfo\Core\Entity\Interfaces\BlameableEntityInterface;
+use Mikoweb\SymfonyUtility\Entity\Interfaces\BlameableEntityInterface;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Security
- */
 abstract class AbstractVoter extends Voter implements ContainerAwareInterface
 {
     /**
@@ -46,7 +38,7 @@ abstract class AbstractVoter extends Voter implements ContainerAwareInterface
     /**
      * @return AuthorizationChecker
      */
-    protected function getAuthChecker()
+    protected function getAuthChecker(): AuthorizationChecker
     {
         return $this->container->get('security.authorization_checker');
     }
@@ -57,7 +49,7 @@ abstract class AbstractVoter extends Voter implements ContainerAwareInterface
      *
      * @return bool
      */
-    protected function isOwner(UserInterface $user, BlameableEntityInterface $object)
+    protected function isOwner(UserInterface $user, BlameableEntityInterface $object): bool
     {
         $creator = $object->getCreatedBy();
 
@@ -71,7 +63,7 @@ abstract class AbstractVoter extends Voter implements ContainerAwareInterface
      *
      * @return bool
      */
-    protected function accessOwner(BlameableEntityInterface $object, UserInterface $user, $role)
+    protected function accessOwner(BlameableEntityInterface $object, UserInterface $user, string $role): bool
     {
         return $this->isOwner($user, $object) && $this->getAuthChecker()->isGranted($role);
     }

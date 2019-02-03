@@ -1,29 +1,23 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Manager;
+namespace Mikoweb\SymfonyUtility\Manager;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use vSymfo\Core\Entity\EntityFactoryInterface;
+use Mikoweb\SymfonyUtility\Entity\EntityFactoryInterface;
 
 /**
  * Common actions. It is usually usage in the controller.
- *
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Manager
  */
 abstract class ControllerManagerAbstract implements ControllerManagerInterface
 {
@@ -68,7 +62,7 @@ abstract class ControllerManagerAbstract implements ControllerManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function findEntity(Request $request, $queryKey = null)
+    public function findEntity(Request $request, ?string $queryKey = null)
     {
         $entity = $this->manager->getRepository($this->getEntityClass())->find(
             is_string($queryKey) ? $request->query->get($queryKey) : $request->attributes->get('id'));
@@ -83,7 +77,7 @@ abstract class ControllerManagerAbstract implements ControllerManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function buildForm($data = null, array $options = [], $type = null)
+    public function buildForm($data = null, array $options = [], ?string $type = null): Form
     {
         $formType = is_null($type) ? $this->formType() : $type;
         $form = $this->formFactory
@@ -97,7 +91,7 @@ abstract class ControllerManagerAbstract implements ControllerManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function save($data)
+    public function save($data): void
     {
         $this->invalidEntityException($data);
         $this->manager->persist($data);
@@ -107,7 +101,7 @@ abstract class ControllerManagerAbstract implements ControllerManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function remove($data)
+    public function remove($data): void
     {
         $this->invalidEntityException($data);
         $this->manager->remove($data);
@@ -119,7 +113,7 @@ abstract class ControllerManagerAbstract implements ControllerManagerInterface
      *
      * @throws \UnexpectedValueException
      */
-    protected function invalidEntityException($data)
+    protected function invalidEntityException($data): void
     {
         if (!$this->isRightEntity($data)) {
             throw new \InvalidArgumentException();

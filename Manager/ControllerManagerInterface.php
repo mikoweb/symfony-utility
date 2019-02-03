@@ -1,16 +1,13 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Manager;
+namespace Mikoweb\SymfonyUtility\Manager;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +15,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Common actions. It is usually usage in the controller.
- *
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Manager
  */
 interface ControllerManagerInterface
 {
@@ -39,7 +32,7 @@ interface ControllerManagerInterface
      *
      * @return string
      */
-    public function getEntityClass();
+    public function getEntityClass(): string;
 
     /**
      * Returns one entity or throw not found exception.
@@ -51,7 +44,7 @@ interface ControllerManagerInterface
      *
      * @throws NotFoundHttpException
      */
-    public function findEntity(Request $request, $queryKey = null);
+    public function findEntity(Request $request, ?string $queryKey = null);
 
     /**
      * Gets paginated items.
@@ -61,7 +54,7 @@ interface ControllerManagerInterface
      *
      * @return mixed
      */
-    public function getPagination(Request $request, $limit);
+    public function getPagination(Request $request, int $limit);
 
     /**
      * Build the form.
@@ -72,14 +65,14 @@ interface ControllerManagerInterface
      *
      * @return Form
      */
-    public function buildForm($data = null, array $options = [], $type = null);
+    public function buildForm($data = null, array $options = [], ?string $type = null): Form;
 
     /**
      * Get class name of form.
      *
      * @return string
      */
-    public function formType();
+    public function formType(): string;
 
     /**
      * Save a entity.
@@ -88,7 +81,7 @@ interface ControllerManagerInterface
      *
      * @return void
      */
-    public function save($entity);
+    public function save($entity): void;
 
     /**
      * Remove a entity.
@@ -97,7 +90,7 @@ interface ControllerManagerInterface
      *
      * @return void
      */
-    public function remove($entity);
+    public function remove($entity): void;
 
     /**
      * Check if a entity is correct.
@@ -106,5 +99,5 @@ interface ControllerManagerInterface
      *
      * @return boolean
      */
-    public function isRightEntity($entity);
+    public function isRightEntity($entity): bool;
 }

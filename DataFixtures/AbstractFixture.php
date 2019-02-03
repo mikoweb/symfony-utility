@@ -1,26 +1,18 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\DataFixtures;
+namespace Mikoweb\SymfonyUtility\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture as BaseFixture;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage DataFixtures
- */
 abstract class AbstractFixture extends BaseFixture implements ContainerAwareInterface
 {
     /**
@@ -45,7 +37,7 @@ abstract class AbstractFixture extends BaseFixture implements ContainerAwareInte
     /**
      * @return string
      */
-    protected function getFixturesDirectory()
+    protected function getFixturesDirectory(): string
     {
         return $this->fixturesDirectory;
     }
@@ -57,7 +49,7 @@ abstract class AbstractFixture extends BaseFixture implements ContainerAwareInte
      *
      * @throws \Exception
      */
-    protected function openXmlFile($filename)
+    protected function openXmlFile(string $filename): \DOMXPath
     {
         $path = $this->getFixturesDirectory() . $filename;
 
@@ -75,9 +67,12 @@ abstract class AbstractFixture extends BaseFixture implements ContainerAwareInte
     /**
      * @param string $class
      * @param string $subclass
+     *
      * @return bool
+     *
+     * @throws \ReflectionException
      */
-    protected function isSubclassOf($class, $subclass)
+    protected function isSubclassOf(string $class, string $subclass): bool
     {
         $reflection = new \ReflectionClass($class);
         return $reflection->isSubclassOf($subclass);
@@ -86,8 +81,10 @@ abstract class AbstractFixture extends BaseFixture implements ContainerAwareInte
     /**
      * @param string $class
      * @param string $subclass
+     *
+     * @throws \ReflectionException
      */
-    protected function throwIsNotSubclass($class, $subclass)
+    protected function throwIsNotSubclass(string $class, string $subclass): void
     {
         if (!$this->isSubclassOf($class, $subclass)) {
             throw new \UnexpectedValueException($class . ' is not subclass of ' . $subclass);
@@ -99,8 +96,10 @@ abstract class AbstractFixture extends BaseFixture implements ContainerAwareInte
      * @param string|null $checkIsSubclass
      *
      * @return object
+     *
+     * @throws \ReflectionException
      */
-    protected function createEntity($class, $checkIsSubclass = null)
+    protected function createEntity(string $class, ?string $checkIsSubclass = null)
     {
         if (is_string($checkIsSubclass)) {
             $this->throwIsNotSubclass($class, $checkIsSubclass);

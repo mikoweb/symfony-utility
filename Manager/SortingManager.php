@@ -1,26 +1,18 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Manager;
+namespace Mikoweb\SymfonyUtility\Manager;
 
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Manager
- */
 class SortingManager
 {
     const DEFAULT_FIELD_SORT = 'sort';
@@ -63,7 +55,7 @@ class SortingManager
     /**
      * @return string
      */
-    public function getFieldSort()
+    public function getFieldSort(): string
     {
         return $this->fieldSort;
     }
@@ -71,15 +63,15 @@ class SortingManager
     /**
      * @param string $fieldSort
      */
-    public function setFieldSort($fieldSort)
+    public function setFieldSort(string $fieldSort): void
     {
-        $this->fieldSort = (string)$fieldSort;
+        $this->fieldSort = $fieldSort;
     }
 
     /**
      * @return string
      */
-    public function getFieldDirection()
+    public function getFieldDirection(): string
     {
         return $this->fieldDirection;
     }
@@ -87,15 +79,15 @@ class SortingManager
     /**
      * @param string $fieldDirection
      */
-    public function setFieldDirection($fieldDirection)
+    public function setFieldDirection(string $fieldDirection): void
     {
-        $this->fieldDirection = (string)$fieldDirection;
+        $this->fieldDirection = $fieldDirection;
     }
 
     /**
      * @return array
      */
-    public function getAllowedColumns()
+    public function getAllowedColumns(): array
     {
         return $this->allowedColumns;
     }
@@ -103,7 +95,7 @@ class SortingManager
     /**
      * @param array $allowedColumns
      */
-    public function setAllowedColumns(array $allowedColumns)
+    public function setAllowedColumns(array $allowedColumns): void
     {
         $this->allowedColumns = $allowedColumns;
     }
@@ -112,7 +104,7 @@ class SortingManager
      * @param string $columnName
      * @param callable $sort
      */
-    public function addCustomSort($columnName, callable $sort)
+    public function addCustomSort(string $columnName, callable $sort): void
     {
         if (!isset($this->custom[$columnName])) {
             $this->custom[$columnName] = [];
@@ -124,7 +116,7 @@ class SortingManager
     /**
      * @param string $columnName
      */
-    public function removeCustomSort($columnName)
+    public function removeCustomSort(string $columnName): void
     {
         if (isset($this->custom[$columnName])) {
             unset($this->custom[$columnName]);
@@ -138,7 +130,7 @@ class SortingManager
      *
      * @throws NotFoundHttpException
      */
-    public function sort(Request $request, QueryBuilder $queryBuilder)
+    public function sort(Request $request, QueryBuilder $queryBuilder): QueryBuilder
     {
         $direction = $this->getDirection($request);
         $sort = $this->getSort($request);
@@ -161,7 +153,7 @@ class SortingManager
      *
      * @return string|null
      */
-    public function getDirection(Request $request)
+    public function getDirection(Request $request): ?string
     {
         $direction = $request->query->has($this->getFieldDirection())
             ? $request->query->get($this->getFieldDirection())
@@ -179,7 +171,7 @@ class SortingManager
      *
      * @return string|null
      */
-    public function getSort(Request $request)
+    public function getSort(Request $request): ?string
     {
         return $request->query->has($this->getFieldSort())
             ? $request->query->get($this->getFieldSort())
@@ -193,7 +185,7 @@ class SortingManager
      *
      * @throws NotFoundHttpException
      */
-    protected function simpleSort(QueryBuilder $queryBuilder, $sort, $direction)
+    protected function simpleSort(QueryBuilder $queryBuilder, string $sort, string $direction): void
     {
         if (!preg_match('/^([a-zA-Z0-9_]+[.]{1})?[a-zA-Z0-9_]+$/', $sort)) {
             throw new NotFoundHttpException('Not found sort column');
@@ -215,7 +207,7 @@ class SortingManager
      *
      * @return bool
      */
-    protected function customSort(QueryBuilder $queryBuilder, $sort, $direction)
+    protected function customSort(QueryBuilder $queryBuilder, string $sort, string $direction): bool
     {
         if (!isset($this->custom[$sort]) || empty($this->custom[$sort])) {
             return false;

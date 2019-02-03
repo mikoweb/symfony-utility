@@ -1,26 +1,19 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Crud;
+namespace Mikoweb\SymfonyUtility\Crud;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Data returned by the methods of CRUD.
- *
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Crud
  */
 class Data implements DataInterface
 {
@@ -47,7 +40,7 @@ class Data implements DataInterface
     /**
      * {@inheritdoc}
      */
-    public function getForm()
+    public function getForm(): ?Form
     {
         return $this->form;
     }
@@ -55,7 +48,7 @@ class Data implements DataInterface
     /**
      * {@inheritdoc}
      */
-    public function setForm(Form $form = null)
+    public function setForm(?Form $form = null): void
     {
         $this->form = $form;
     }
@@ -63,7 +56,7 @@ class Data implements DataInterface
     /**
      * {@inheritdoc}
      */
-    public function getResponse()
+    public function getResponse(): ?Response
     {
         return $this->response;
     }
@@ -71,7 +64,7 @@ class Data implements DataInterface
     /**
      * {@inheritdoc}
      */
-    public function setResponse(Response $response = null)
+    public function setResponse(?Response $response = null): void
     {
         $this->response = $response;
     }

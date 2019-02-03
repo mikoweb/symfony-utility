@@ -1,32 +1,22 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Entity;
+namespace Mikoweb\SymfonyUtility\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\RoleInterface;
-use vSymfo\Core\Entity\Interfaces\SoftDeleteableInterface;
-use vSymfo\Core\Entity\Interfaces\TimestampableInterface;
-use vSymfo\Core\Entity\Traits\IrremovableTrait;
-use vSymfo\Core\Entity\Traits\SoftDeleteableTrait;
-use vSymfo\Core\Entity\Traits\TimestampableTrait;
+use Mikoweb\SymfonyUtility\Entity\Interfaces\SoftDeleteableInterface;
+use Mikoweb\SymfonyUtility\Entity\Interfaces\TimestampableInterface;
+use Mikoweb\SymfonyUtility\Entity\Traits\IrremovableTrait;
+use Mikoweb\SymfonyUtility\Entity\Traits\SoftDeleteableTrait;
+use Mikoweb\SymfonyUtility\Entity\Traits\TimestampableTrait;
 
-/**
- * Role użytkownika
- *
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Entity
- */
 abstract class RoleAbstract implements RoleInterface, SoftDeleteableInterface, TimestampableInterface
 {
     use SoftDeleteableTrait;

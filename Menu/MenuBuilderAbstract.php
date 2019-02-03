@@ -1,16 +1,13 @@
 <?php
 
 /*
- * This file is part of the vSymfo package.
- *
- * website: www.vision-web.pl
- * (c) Rafał Mikołajun <rafal@vision-web.pl>
+ * (c) Rafał Mikołajun <root@rmweb.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace vSymfo\Core\Menu;
+namespace Mikoweb\SymfonyUtility\Menu;
 
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Knp\Menu\FactoryInterface;
@@ -20,11 +17,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Translation\TranslatorInterface;
 
-/**
- * @author Rafał Mikołajun <rafal@vision-web.pl>
- * @package vSymfo Core
- * @subpackage Menu
- */
 abstract class MenuBuilderAbstract
 {
     /**
@@ -82,14 +74,14 @@ abstract class MenuBuilderAbstract
     /**
      * @return ItemInterface
      */
-    abstract function createMenu();
+    abstract function createMenu(): ItemInterface;
 
     /**
      * @param string $filename
      *
      * @return ItemInterface
      */
-    protected function loadMenuFromXml($filename)
+    protected function loadMenuFromXml(string $filename): ItemInterface
     {
         if (is_null($this->menuData)) {
             $this->menuData = simplexml_load_file($filename);
@@ -108,7 +100,7 @@ abstract class MenuBuilderAbstract
      * @param ItemInterface $parent
      * @param \SimpleXMLElement $item
      */
-    protected function menuItems(ItemInterface $parent, \SimpleXMLElement $item)
+    protected function menuItems(ItemInterface $parent, \SimpleXMLElement $item): void
     {
         $route = isset($item['route']) ? (string)$item['route'] : null;
         $title = isset($item['title']) ? (string)$item['title'] : null;
@@ -136,8 +128,8 @@ abstract class MenuBuilderAbstract
 
     /**
      * @param ItemInterface $parent
+     * @param string $title
      * @param null|string $role
-     * @param null|string $title
      * @param null|string $route
      * @param null|string $uri
      * @param null|string $iconClass
@@ -145,7 +137,15 @@ abstract class MenuBuilderAbstract
      *
      * @return ItemInterface|null
      */
-    protected function menuItem(ItemInterface $parent, $title, $role = null, $route = null, $uri = null, $iconClass = null, \SimpleXMLElement $params)
+    protected function menuItem(
+        ItemInterface $parent,
+        string $title,
+        ?string $role = null,
+        ?string $route = null,
+        ?string $uri = null,
+        ?string $iconClass = null,
+        \SimpleXMLElement $params
+    ): ?ItemInterface
     {
         $item = null;
 
@@ -189,7 +189,7 @@ abstract class MenuBuilderAbstract
      * @param boolean $hidden
      * @param array $options
      */
-    protected function addRouteParameters($route, \SimpleXMLElement $params, $hidden, array &$options)
+    protected function addRouteParameters(string $route, \SimpleXMLElement $params, bool $hidden, array &$options): void
     {
         $options['routeParameters'] = [];
         $parameters = $params->xpath('param');
@@ -231,5 +231,5 @@ abstract class MenuBuilderAbstract
     /**
      * @return string
      */
-    abstract protected function translationDomain();
+    abstract protected function translationDomain(): string;
 }
