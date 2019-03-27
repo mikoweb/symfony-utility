@@ -10,7 +10,6 @@
 namespace Mikoweb\SymfonyUtility\Controller\Traits;
 
 use Symfony\Component\HttpFoundation\Response;
-use vSymfo\Core\Traits\DocumentableControllerTrait;
 
 trait PrefixableViewsTrait
 {
