@@ -10,14 +10,13 @@
 namespace Mikoweb\SymfonyUtility\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Role\RoleInterface;
 use Mikoweb\SymfonyUtility\Entity\Interfaces\SoftDeleteableInterface;
 use Mikoweb\SymfonyUtility\Entity\Interfaces\TimestampableInterface;
 use Mikoweb\SymfonyUtility\Entity\Traits\IrremovableTrait;
 use Mikoweb\SymfonyUtility\Entity\Traits\SoftDeleteableTrait;
 use Mikoweb\SymfonyUtility\Entity\Traits\TimestampableTrait;
 
-abstract class RoleAbstract implements RoleInterface, SoftDeleteableInterface, TimestampableInterface
+abstract class RoleAbstract implements SoftDeleteableInterface, TimestampableInterface
 {
     use SoftDeleteableTrait;
     use TimestampableTrait;
