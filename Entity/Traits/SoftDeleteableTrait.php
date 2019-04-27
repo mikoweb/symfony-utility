@@ -16,7 +16,7 @@ trait SoftDeleteableTrait
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
     protected $deletedAt;
 
