@@ -15,8 +15,11 @@ use Mikoweb\SymfonyUtility\Entity\Interfaces\TimestampableInterface;
 use Mikoweb\SymfonyUtility\Entity\Traits\IrremovableTrait;
 use Mikoweb\SymfonyUtility\Entity\Traits\SoftDeleteableTrait;
 use Mikoweb\SymfonyUtility\Entity\Traits\TimestampableTrait;
+use Symfony\Component\Security\Core\Role\Role;
 
-abstract class RoleAbstract implements SoftDeleteableInterface, TimestampableInterface
+abstract class RoleAbstract extends Role implements
+    SoftDeleteableInterface,
+    TimestampableInterface
 {
     use SoftDeleteableTrait;
     use TimestampableTrait;
