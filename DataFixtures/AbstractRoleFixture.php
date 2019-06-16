@@ -98,7 +98,7 @@ abstract class AbstractRoleFixture extends AbstractFixture
         $manager->persist($entity);
         $this->setReference('Role.' . $role, $entity);
 
-        return $role;
+        return $entity;
     }
 
     /**
