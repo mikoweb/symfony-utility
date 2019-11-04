@@ -19,5 +19,5 @@ interface RemovableInterface
      *
      * @return Response
      */
-    public function destroyAction(Request $request);
+    public function destroy(Request $request);
 }

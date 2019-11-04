@@ -19,26 +19,26 @@ interface WritableInterface
      *
      * @return Response
      */
-    public function createAction(Request $request);
+    public function create(Request $request);
 
     /**
      * @param Request $request
      *
      * @return Response
      */
-    public function storeAction(Request $request);
+    public function store(Request $request);
 
     /**
      * @param Request $request
      *
      * @return Response
      */
-    public function editAction(Request $request);
+    public function edit(Request $request);
 
     /**
      * @param Request $request
      *
      * @return Response
      */
-    public function updateAction(Request $request);
+    public function update(Request $request);
 }

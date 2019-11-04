@@ -19,12 +19,12 @@ interface ReadableInterface
      *
      * @return Response
      */
-    public function indexAction(Request $request);
+    public function index(Request $request);
 
     /**
      * @param Request $request
      *
      * @return Response
      */
-    public function showAction(Request $request);
+    public function show(Request $request);
 }
