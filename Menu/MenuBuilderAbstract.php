@@ -57,7 +57,7 @@ abstract class MenuBuilderAbstract
      * @param RouterInterface $router
      */
     public function __construct(
-        FactoryInterface $factory, 
+        FactoryInterface $factory,
         AuthorizationChecker $authorizationChecker,
         TranslatorInterface $translator,
         RequestStack $request,
@@ -184,12 +184,12 @@ abstract class MenuBuilderAbstract
     }
 
     /**
-     * @param string $route
+     * @param string $routeName
      * @param \SimpleXMLElement $params
      * @param boolean $hidden
      * @param array $options
      */
-    protected function addRouteParameters(string $route, \SimpleXMLElement $params, bool $hidden, array &$options): void
+    protected function addRouteParameters(string $routeName, \SimpleXMLElement $params, bool $hidden, array &$options): void
     {
         $options['routeParameters'] = [];
         $parameters = $params->xpath('param');
@@ -209,7 +209,13 @@ abstract class MenuBuilderAbstract
                 $collection = $this->router->getRouteCollection();
             }
 
-            $route = $collection->get($route);
+            $route = $collection->get($routeName);
+
+            if (is_null($route)) {
+                $locale = $this->translator->getLocale();
+                $route = $collection->get("$routeName.$locale");
+            }
+
             $variables = [];
             preg_match_all('#\{\w+\}#', $route->getPath(), $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
             foreach ($matches as $match) {
